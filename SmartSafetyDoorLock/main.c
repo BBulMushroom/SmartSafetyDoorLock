@@ -87,6 +87,8 @@ bool flag_isButtonPressed = false;	// open button 눌림 플래그
 bool flag_isRFIDReceived = false;	// RFID 수신 플래그
 /////////////////////////////////////////////////////////////////////////////////////
 // 함수 선언
+void urgentButton();
+void checkADC(char* string, int num);
 void init_Buzzer();
 void buzzerOn();
 void buzzerOff();
@@ -94,16 +96,19 @@ bool doorCheck();
 void init_Servo();
 void openDoor();
 void closeDoor();
-bool arrayEqual(uint8_t a[], uint8_t b[], uint8_t size);
-void sendRfidInfo(int index);
-void readRfid();
-void writeRfid(int index);
-int searchEmptyMemory();
-bool eeprom_delete_data_index(int index);
+void init_RFID();
 void byteToString(uint8_t data[4], char str[50]);
-void eeprom_read_data(int index, char name[11], uint8_t data[4]);
-void eeprom_update_data(int index, char name[11], uint8_t data[4]);
+bool arrayEqual(uint8_t a[], uint8_t b[], uint8_t size);
 void readRfid(uint8_t data[4]);
+void storeRfid(uint8_t data[4]);
+int searchEmptyMemory();
+void writeRfid(int index);
+int checkRfid(uint8_t data[4]);
+void sendRfidInfo(int index);
+void deleteRfid(int index);
+void eeprom_update_data(int index, char name[11], uint8_t data[4]);
+void eeprom_read_data(int index, char name[11], uint8_t data[4]);
+bool eeprom_delete_data_index(int index);
 /////////////////////////////////////////////////////////////////////////////////////
 // USART
 //
