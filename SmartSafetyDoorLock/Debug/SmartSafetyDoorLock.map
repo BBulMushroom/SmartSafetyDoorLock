@@ -59,6 +59,8 @@ Discarded input sections
                 0x00000000       0x6c main.o
  .text.deleteRfid
                 0x00000000       0x3a main.o
+ .data.data2    0x00000000        0x4 main.o
+ .data.data1    0x00000000        0x4 main.o
  .bss.buttonRfidTime
                 0x00000000        0x2 main.o
  .bss.rfidFindCount
@@ -541,80 +543,76 @@ END GROUP
  *(.fini0)
                 0x00001510                _etext = .
 
-.data           0x00800100       0xdc load address 0x00001510
+.data           0x00800100       0xca load address 0x00001510
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  *(.data*)
  .data.flag_autoClose
                 0x00800100        0x1 main.o
                 0x00800100                flag_autoClose
- .data.data2    0x00800101        0x4 main.o
-                0x00800101                data2
- .data.data1    0x00800105        0x4 main.o
-                0x00800105                data1
  *(.gnu.linkonce.d*)
  *(.rodata)
  *(.rodata*)
  .rodata.str1.1
-                0x00800109       0xd3 main.o
-                                 0xd7 (size before relaxing)
+                0x00800101       0xc9 main.o
+                                 0xcd (size before relaxing)
  *(.gnu.linkonce.r*)
-                0x008001dc                . = ALIGN (0x2)
-                0x008001dc                _edata = .
-                0x008001dc                PROVIDE (__data_end, .)
+                0x008001ca                . = ALIGN (0x2)
+                0x008001ca                _edata = .
+                0x008001ca                PROVIDE (__data_end, .)
 
-.bss            0x008001dc       0x7c
-                0x008001dc                PROVIDE (__bss_start, .)
+.bss            0x008001ca       0x7c
+                0x008001ca                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
  .bss.flag_isRFIDReceived
-                0x008001dc        0x1 main.o
-                0x008001dc                flag_isRFIDReceived
+                0x008001ca        0x1 main.o
+                0x008001ca                flag_isRFIDReceived
  .bss.flag_isButtonPressed
-                0x008001dd        0x1 main.o
-                0x008001dd                flag_isButtonPressed
+                0x008001cb        0x1 main.o
+                0x008001cb                flag_isButtonPressed
  .bss.flag_isBuzzerRunning
-                0x008001de        0x1 main.o
-                0x008001de                flag_isBuzzerRunning
+                0x008001cc        0x1 main.o
+                0x008001cc                flag_isBuzzerRunning
  .bss.emptyData
-                0x008001df        0x4 main.o
-                0x008001df                emptyData
+                0x008001cd        0x4 main.o
+                0x008001cd                emptyData
  .bss.emptyName
-                0x008001e3        0xb main.o
-                0x008001e3                emptyName
+                0x008001d1        0xb main.o
+                0x008001d1                emptyName
  .bss.shockCountTime
-                0x008001ee        0x2 main.o
-                0x008001ee                shockCountTime
+                0x008001dc        0x2 main.o
+                0x008001dc                shockCountTime
  .bss.lockedTime
-                0x008001f0        0x2 main.o
-                0x008001f0                lockedTime
+                0x008001de        0x2 main.o
+                0x008001de                lockedTime
  .bss.seniorHelpTime
-                0x008001f2        0x2 main.o
-                0x008001f2                seniorHelpTime
+                0x008001e0        0x2 main.o
+                0x008001e0                seniorHelpTime
  .bss.autoCloseWaitTime
-                0x008001f4        0x2 main.o
-                0x008001f4                autoCloseWaitTime
+                0x008001e2        0x2 main.o
+                0x008001e2                autoCloseWaitTime
  .bss.tmpShockCount
-                0x008001f6        0x2 main.o
-                0x008001f6                tmpShockCount
+                0x008001e4        0x2 main.o
+                0x008001e4                tmpShockCount
  .bss.shockCount
-                0x008001f8        0x2 main.o
-                0x008001f8                shockCount
+                0x008001e6        0x2 main.o
+                0x008001e6                shockCount
  *(COMMON)
- COMMON         0x008001fa       0x5e main.o
-                0x008001fa                currentRfidData
-                0x008001fe                chRxTemp0
-                0x008001ff                lastRfidData
-                0x00800203                RFID_data
-                0x00800258                PROVIDE (__bss_end, .)
+ COMMON         0x008001e8       0x5e main.o
+                0x008001e8                currentRfidData
+                0x008001ec                chRxTemp0
+                0x008001ed                lastRfidData
+                0x008001f1                RFID_data
+                0x00800246                PROVIDE (__bss_end, .)
                 0x00001510                __data_load_start = LOADADDR (.data)
-                0x000015ec                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x000015da                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800258        0x0
+.noinit         0x00800246        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800258                _end = .
+                0x00800246                _end = .
                 [!provide]                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0

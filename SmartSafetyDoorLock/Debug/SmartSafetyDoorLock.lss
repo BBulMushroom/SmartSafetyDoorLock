@@ -3,31 +3,31 @@ SmartSafetyDoorLock.elf:     file format elf32-avr
 
 Sections:
 Idx Name          Size      VMA       LMA       File off  Algn
-  0 .data         000000dc  00800100  00001510  000015a4  2**0
+  0 .data         000000ca  00800100  00001510  000015a4  2**0
                   CONTENTS, ALLOC, LOAD, DATA
   1 .text         00001510  00000000  00000000  00000094  2**1
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
-  2 .bss          0000007c  008001dc  008001dc  00001680  2**0
+  2 .bss          0000007c  008001ca  008001ca  0000166e  2**0
                   ALLOC
-  3 .comment      0000005c  00000000  00000000  00001680  2**0
+  3 .comment      0000005c  00000000  00000000  0000166e  2**0
                   CONTENTS, READONLY
-  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000016dc  2**2
+  4 .note.gnu.avr.deviceinfo 0000003c  00000000  00000000  000016cc  2**2
                   CONTENTS, READONLY
-  5 .debug_aranges 000001f0  00000000  00000000  00001718  2**3
+  5 .debug_aranges 000001f0  00000000  00000000  00001708  2**3
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000024a0  00000000  00000000  00001908  2**0
+  6 .debug_info   000024a0  00000000  00000000  000018f8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000e1f  00000000  00000000  00003da8  2**0
+  7 .debug_abbrev 00000e1f  00000000  00000000  00003d98  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000139e  00000000  00000000  00004bc7  2**0
+  8 .debug_line   0000139e  00000000  00000000  00004bb7  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000059c  00000000  00000000  00005f68  2**2
+  9 .debug_frame  0000059c  00000000  00000000  00005f58  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000008c6  00000000  00000000  00006504  2**0
+ 10 .debug_str    000008c6  00000000  00000000  000064f4  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00001788  00000000  00000000  00006dca  2**0
+ 11 .debug_loc    00001788  00000000  00000000  00006dba  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000001e8  00000000  00000000  00008552  2**0
+ 12 .debug_ranges 000001e8  00000000  00000000  00008542  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -123,13 +123,13 @@ Disassembly of section .text:
       a6:	02 c0       	rjmp	.+4      	; 0xac <__do_copy_data+0x14>
       a8:	07 90       	elpm	r0, Z+
       aa:	0d 92       	st	X+, r0
-      ac:	ac 3d       	cpi	r26, 0xDC	; 220
+      ac:	aa 3c       	cpi	r26, 0xCA	; 202
       ae:	b1 07       	cpc	r27, r17
       b0:	d9 f7       	brne	.-10     	; 0xa8 <__do_copy_data+0x10>
 
 000000b2 <__do_clear_bss>:
       b2:	22 e0       	ldi	r18, 0x02	; 2
-      b4:	ac ed       	ldi	r26, 0xDC	; 220
+      b4:	aa ec       	ldi	r26, 0xCA	; 202
       b6:	b1 e0       	ldi	r27, 0x01	; 1
       b8:	01 c0       	rjmp	.+2      	; 0xbc <.do_clear_bss_start>
 
@@ -137,7 +137,7 @@ Disassembly of section .text:
       ba:	1d 92       	st	X+, r1
 
 000000bc <.do_clear_bss_start>:
-      bc:	a8 35       	cpi	r26, 0x58	; 88
+      bc:	a6 34       	cpi	r26, 0x46	; 70
       be:	b2 07       	cpc	r27, r18
       c0:	e1 f7       	brne	.-8      	; 0xba <.do_clear_bss_loop>
       c2:	31 d6       	rcall	.+3170   	; 0xd26 <main>
@@ -1110,13 +1110,13 @@ void deleteRfid(int index)	//RFID 저장값 삭제
      50e:	8d e6       	ldi	r24, 0x6D	; 109
      510:	83 bf       	out	0x33, r24	; 51
      512:	81 e0       	ldi	r24, 0x01	; 1
-     514:	80 93 de 01 	sts	0x01DE, r24	; 0x8001de <flag_isBuzzerRunning>
+     514:	80 93 cc 01 	sts	0x01CC, r24	; 0x8001cc <flag_isBuzzerRunning>
      518:	08 95       	ret
 
 0000051a <buzzerOff>:
      51a:	8d e5       	ldi	r24, 0x5D	; 93
      51c:	83 bf       	out	0x33, r24	; 51
-     51e:	10 92 de 01 	sts	0x01DE, r1	; 0x8001de <flag_isBuzzerRunning>
+     51e:	10 92 cc 01 	sts	0x01CC, r1	; 0x8001cc <flag_isBuzzerRunning>
      522:	08 95       	ret
 
 00000524 <urgentButton>:
@@ -1179,8 +1179,8 @@ void deleteRfid(int index)	//RFID 저장값 삭제
      58c:	8a bd       	out	0x2a, r24	; 42
      58e:	81 e0       	ldi	r24, 0x01	; 1
      590:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
-     594:	10 92 f5 01 	sts	0x01F5, r1	; 0x8001f5 <autoCloseWaitTime+0x1>
-     598:	10 92 f4 01 	sts	0x01F4, r1	; 0x8001f4 <autoCloseWaitTime>
+     594:	10 92 e3 01 	sts	0x01E3, r1	; 0x8001e3 <autoCloseWaitTime+0x1>
+     598:	10 92 e2 01 	sts	0x01E2, r1	; 0x8001e2 <autoCloseWaitTime>
      59c:	2f ef       	ldi	r18, 0xFF	; 255
      59e:	85 ea       	ldi	r24, 0xA5	; 165
      5a0:	9e e0       	ldi	r25, 0x0E	; 14
@@ -1244,99 +1244,99 @@ void deleteRfid(int index)	//RFID 저장값 삭제
      60e:	88 23       	and	r24, r24
      610:	09 f4       	brne	.+2      	; 0x614 <__vector_10+0x32>
      612:	3c c0       	rjmp	.+120    	; 0x68c <__vector_10+0xaa>
-     614:	10 92 f1 01 	sts	0x01F1, r1	; 0x8001f1 <lockedTime+0x1>
-     618:	10 92 f0 01 	sts	0x01F0, r1	; 0x8001f0 <lockedTime>
+     614:	10 92 df 01 	sts	0x01DF, r1	; 0x8001df <lockedTime+0x1>
+     618:	10 92 de 01 	sts	0x01DE, r1	; 0x8001de <lockedTime>
      61c:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
      620:	88 23       	and	r24, r24
      622:	89 f0       	breq	.+34     	; 0x646 <__vector_10+0x64>
-     624:	80 91 f4 01 	lds	r24, 0x01F4	; 0x8001f4 <autoCloseWaitTime>
-     628:	90 91 f5 01 	lds	r25, 0x01F5	; 0x8001f5 <autoCloseWaitTime+0x1>
+     624:	80 91 e2 01 	lds	r24, 0x01E2	; 0x8001e2 <autoCloseWaitTime>
+     628:	90 91 e3 01 	lds	r25, 0x01E3	; 0x8001e3 <autoCloseWaitTime+0x1>
      62c:	01 96       	adiw	r24, 0x01	; 1
-     62e:	90 93 f5 01 	sts	0x01F5, r25	; 0x8001f5 <autoCloseWaitTime+0x1>
-     632:	80 93 f4 01 	sts	0x01F4, r24	; 0x8001f4 <autoCloseWaitTime>
-     636:	80 91 f4 01 	lds	r24, 0x01F4	; 0x8001f4 <autoCloseWaitTime>
-     63a:	90 91 f5 01 	lds	r25, 0x01F5	; 0x8001f5 <autoCloseWaitTime+0x1>
+     62e:	90 93 e3 01 	sts	0x01E3, r25	; 0x8001e3 <autoCloseWaitTime+0x1>
+     632:	80 93 e2 01 	sts	0x01E2, r24	; 0x8001e2 <autoCloseWaitTime>
+     636:	80 91 e2 01 	lds	r24, 0x01E2	; 0x8001e2 <autoCloseWaitTime>
+     63a:	90 91 e3 01 	lds	r25, 0x01E3	; 0x8001e3 <autoCloseWaitTime+0x1>
      63e:	88 3b       	cpi	r24, 0xB8	; 184
      640:	9b 40       	sbci	r25, 0x0B	; 11
      642:	08 f0       	brcs	.+2      	; 0x646 <__vector_10+0x64>
      644:	b8 df       	rcall	.-144    	; 0x5b6 <closeDoor>
      646:	9b 99       	sbic	0x13, 3	; 19
      648:	1c c0       	rjmp	.+56     	; 0x682 <__vector_10+0xa0>
-     64a:	80 91 f2 01 	lds	r24, 0x01F2	; 0x8001f2 <seniorHelpTime>
-     64e:	90 91 f3 01 	lds	r25, 0x01F3	; 0x8001f3 <seniorHelpTime+0x1>
+     64a:	80 91 e0 01 	lds	r24, 0x01E0	; 0x8001e0 <seniorHelpTime>
+     64e:	90 91 e1 01 	lds	r25, 0x01E1	; 0x8001e1 <seniorHelpTime+0x1>
      652:	01 96       	adiw	r24, 0x01	; 1
-     654:	90 93 f3 01 	sts	0x01F3, r25	; 0x8001f3 <seniorHelpTime+0x1>
-     658:	80 93 f2 01 	sts	0x01F2, r24	; 0x8001f2 <seniorHelpTime>
-     65c:	80 91 f2 01 	lds	r24, 0x01F2	; 0x8001f2 <seniorHelpTime>
-     660:	90 91 f3 01 	lds	r25, 0x01F3	; 0x8001f3 <seniorHelpTime+0x1>
+     654:	90 93 e1 01 	sts	0x01E1, r25	; 0x8001e1 <seniorHelpTime+0x1>
+     658:	80 93 e0 01 	sts	0x01E0, r24	; 0x8001e0 <seniorHelpTime>
+     65c:	80 91 e0 01 	lds	r24, 0x01E0	; 0x8001e0 <seniorHelpTime>
+     660:	90 91 e1 01 	lds	r25, 0x01E1	; 0x8001e1 <seniorHelpTime+0x1>
      664:	88 38       	cpi	r24, 0x88	; 136
      666:	93 41       	sbci	r25, 0x13	; 19
      668:	a0 f1       	brcs	.+104    	; 0x6d2 <__vector_10+0xf0>
-     66a:	81 e1       	ldi	r24, 0x11	; 17
+     66a:	89 e0       	ldi	r24, 0x09	; 9
      66c:	91 e0       	ldi	r25, 0x01	; 1
      66e:	e3 de       	rcall	.-570    	; 0x436 <USART0_Tx_String>
      670:	4e df       	rcall	.-356    	; 0x50e <buzzerOn>
      672:	86 df       	rcall	.-244    	; 0x580 <openDoor>
      674:	10 92 00 01 	sts	0x0100, r1	; 0x800100 <__DATA_REGION_ORIGIN__>
-     678:	10 92 f3 01 	sts	0x01F3, r1	; 0x8001f3 <seniorHelpTime+0x1>
-     67c:	10 92 f2 01 	sts	0x01F2, r1	; 0x8001f2 <seniorHelpTime>
+     678:	10 92 e1 01 	sts	0x01E1, r1	; 0x8001e1 <seniorHelpTime+0x1>
+     67c:	10 92 e0 01 	sts	0x01E0, r1	; 0x8001e0 <seniorHelpTime>
      680:	28 c0       	rjmp	.+80     	; 0x6d2 <__vector_10+0xf0>
-     682:	10 92 f3 01 	sts	0x01F3, r1	; 0x8001f3 <seniorHelpTime+0x1>
-     686:	10 92 f2 01 	sts	0x01F2, r1	; 0x8001f2 <seniorHelpTime>
+     682:	10 92 e1 01 	sts	0x01E1, r1	; 0x8001e1 <seniorHelpTime+0x1>
+     686:	10 92 e0 01 	sts	0x01E0, r1	; 0x8001e0 <seniorHelpTime>
      68a:	23 c0       	rjmp	.+70     	; 0x6d2 <__vector_10+0xf0>
-     68c:	10 92 f5 01 	sts	0x01F5, r1	; 0x8001f5 <autoCloseWaitTime+0x1>
-     690:	10 92 f4 01 	sts	0x01F4, r1	; 0x8001f4 <autoCloseWaitTime>
-     694:	10 92 f3 01 	sts	0x01F3, r1	; 0x8001f3 <seniorHelpTime+0x1>
-     698:	10 92 f2 01 	sts	0x01F2, r1	; 0x8001f2 <seniorHelpTime>
+     68c:	10 92 e3 01 	sts	0x01E3, r1	; 0x8001e3 <autoCloseWaitTime+0x1>
+     690:	10 92 e2 01 	sts	0x01E2, r1	; 0x8001e2 <autoCloseWaitTime>
+     694:	10 92 e1 01 	sts	0x01E1, r1	; 0x8001e1 <seniorHelpTime+0x1>
+     698:	10 92 e0 01 	sts	0x01E0, r1	; 0x8001e0 <seniorHelpTime>
      69c:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
      6a0:	88 23       	and	r24, r24
      6a2:	b9 f0       	breq	.+46     	; 0x6d2 <__vector_10+0xf0>
-     6a4:	80 91 f0 01 	lds	r24, 0x01F0	; 0x8001f0 <lockedTime>
-     6a8:	90 91 f1 01 	lds	r25, 0x01F1	; 0x8001f1 <lockedTime+0x1>
+     6a4:	80 91 de 01 	lds	r24, 0x01DE	; 0x8001de <lockedTime>
+     6a8:	90 91 df 01 	lds	r25, 0x01DF	; 0x8001df <lockedTime+0x1>
      6ac:	01 96       	adiw	r24, 0x01	; 1
-     6ae:	90 93 f1 01 	sts	0x01F1, r25	; 0x8001f1 <lockedTime+0x1>
-     6b2:	80 93 f0 01 	sts	0x01F0, r24	; 0x8001f0 <lockedTime>
-     6b6:	80 91 f0 01 	lds	r24, 0x01F0	; 0x8001f0 <lockedTime>
-     6ba:	90 91 f1 01 	lds	r25, 0x01F1	; 0x8001f1 <lockedTime+0x1>
+     6ae:	90 93 df 01 	sts	0x01DF, r25	; 0x8001df <lockedTime+0x1>
+     6b2:	80 93 de 01 	sts	0x01DE, r24	; 0x8001de <lockedTime>
+     6b6:	80 91 de 01 	lds	r24, 0x01DE	; 0x8001de <lockedTime>
+     6ba:	90 91 df 01 	lds	r25, 0x01DF	; 0x8001df <lockedTime+0x1>
      6be:	88 38       	cpi	r24, 0x88	; 136
      6c0:	93 41       	sbci	r25, 0x13	; 19
      6c2:	38 f0       	brcs	.+14     	; 0x6d2 <__vector_10+0xf0>
-     6c4:	89 e1       	ldi	r24, 0x19	; 25
+     6c4:	81 e1       	ldi	r24, 0x11	; 17
      6c6:	91 e0       	ldi	r25, 0x01	; 1
      6c8:	b6 de       	rcall	.-660    	; 0x436 <USART0_Tx_String>
-     6ca:	10 92 f1 01 	sts	0x01F1, r1	; 0x8001f1 <lockedTime+0x1>
-     6ce:	10 92 f0 01 	sts	0x01F0, r1	; 0x8001f0 <lockedTime>
-     6d2:	20 91 f8 01 	lds	r18, 0x01F8	; 0x8001f8 <shockCount>
-     6d6:	30 91 f9 01 	lds	r19, 0x01F9	; 0x8001f9 <shockCount+0x1>
-     6da:	80 91 f6 01 	lds	r24, 0x01F6	; 0x8001f6 <tmpShockCount>
-     6de:	90 91 f7 01 	lds	r25, 0x01F7	; 0x8001f7 <tmpShockCount+0x1>
+     6ca:	10 92 df 01 	sts	0x01DF, r1	; 0x8001df <lockedTime+0x1>
+     6ce:	10 92 de 01 	sts	0x01DE, r1	; 0x8001de <lockedTime>
+     6d2:	20 91 e6 01 	lds	r18, 0x01E6	; 0x8001e6 <shockCount>
+     6d6:	30 91 e7 01 	lds	r19, 0x01E7	; 0x8001e7 <shockCount+0x1>
+     6da:	80 91 e4 01 	lds	r24, 0x01E4	; 0x8001e4 <tmpShockCount>
+     6de:	90 91 e5 01 	lds	r25, 0x01E5	; 0x8001e5 <tmpShockCount+0x1>
      6e2:	28 17       	cp	r18, r24
      6e4:	39 07       	cpc	r19, r25
      6e6:	61 f0       	breq	.+24     	; 0x700 <__vector_10+0x11e>
-     6e8:	10 92 ef 01 	sts	0x01EF, r1	; 0x8001ef <shockCountTime+0x1>
-     6ec:	10 92 ee 01 	sts	0x01EE, r1	; 0x8001ee <shockCountTime>
-     6f0:	80 91 f8 01 	lds	r24, 0x01F8	; 0x8001f8 <shockCount>
-     6f4:	90 91 f9 01 	lds	r25, 0x01F9	; 0x8001f9 <shockCount+0x1>
-     6f8:	90 93 f7 01 	sts	0x01F7, r25	; 0x8001f7 <tmpShockCount+0x1>
-     6fc:	80 93 f6 01 	sts	0x01F6, r24	; 0x8001f6 <tmpShockCount>
-     700:	80 91 f8 01 	lds	r24, 0x01F8	; 0x8001f8 <shockCount>
-     704:	90 91 f9 01 	lds	r25, 0x01F9	; 0x8001f9 <shockCount+0x1>
+     6e8:	10 92 dd 01 	sts	0x01DD, r1	; 0x8001dd <shockCountTime+0x1>
+     6ec:	10 92 dc 01 	sts	0x01DC, r1	; 0x8001dc <shockCountTime>
+     6f0:	80 91 e6 01 	lds	r24, 0x01E6	; 0x8001e6 <shockCount>
+     6f4:	90 91 e7 01 	lds	r25, 0x01E7	; 0x8001e7 <shockCount+0x1>
+     6f8:	90 93 e5 01 	sts	0x01E5, r25	; 0x8001e5 <tmpShockCount+0x1>
+     6fc:	80 93 e4 01 	sts	0x01E4, r24	; 0x8001e4 <tmpShockCount>
+     700:	80 91 e6 01 	lds	r24, 0x01E6	; 0x8001e6 <shockCount>
+     704:	90 91 e7 01 	lds	r25, 0x01E7	; 0x8001e7 <shockCount+0x1>
      708:	89 2b       	or	r24, r25
      70a:	c1 f0       	breq	.+48     	; 0x73c <__vector_10+0x15a>
-     70c:	80 91 ee 01 	lds	r24, 0x01EE	; 0x8001ee <shockCountTime>
-     710:	90 91 ef 01 	lds	r25, 0x01EF	; 0x8001ef <shockCountTime+0x1>
+     70c:	80 91 dc 01 	lds	r24, 0x01DC	; 0x8001dc <shockCountTime>
+     710:	90 91 dd 01 	lds	r25, 0x01DD	; 0x8001dd <shockCountTime+0x1>
      714:	01 96       	adiw	r24, 0x01	; 1
-     716:	90 93 ef 01 	sts	0x01EF, r25	; 0x8001ef <shockCountTime+0x1>
-     71a:	80 93 ee 01 	sts	0x01EE, r24	; 0x8001ee <shockCountTime>
-     71e:	80 91 ee 01 	lds	r24, 0x01EE	; 0x8001ee <shockCountTime>
-     722:	90 91 ef 01 	lds	r25, 0x01EF	; 0x8001ef <shockCountTime+0x1>
+     716:	90 93 dd 01 	sts	0x01DD, r25	; 0x8001dd <shockCountTime+0x1>
+     71a:	80 93 dc 01 	sts	0x01DC, r24	; 0x8001dc <shockCountTime>
+     71e:	80 91 dc 01 	lds	r24, 0x01DC	; 0x8001dc <shockCountTime>
+     722:	90 91 dd 01 	lds	r25, 0x01DD	; 0x8001dd <shockCountTime+0x1>
      726:	88 38       	cpi	r24, 0x88	; 136
      728:	93 41       	sbci	r25, 0x13	; 19
      72a:	40 f0       	brcs	.+16     	; 0x73c <__vector_10+0x15a>
-     72c:	10 92 f9 01 	sts	0x01F9, r1	; 0x8001f9 <shockCount+0x1>
-     730:	10 92 f8 01 	sts	0x01F8, r1	; 0x8001f8 <shockCount>
-     734:	10 92 f7 01 	sts	0x01F7, r1	; 0x8001f7 <tmpShockCount+0x1>
-     738:	10 92 f6 01 	sts	0x01F6, r1	; 0x8001f6 <tmpShockCount>
+     72c:	10 92 e7 01 	sts	0x01E7, r1	; 0x8001e7 <shockCount+0x1>
+     730:	10 92 e6 01 	sts	0x01E6, r1	; 0x8001e6 <shockCount>
+     734:	10 92 e5 01 	sts	0x01E5, r1	; 0x8001e5 <tmpShockCount+0x1>
+     738:	10 92 e4 01 	sts	0x01E4, r1	; 0x8001e4 <tmpShockCount>
      73c:	ff 91       	pop	r31
      73e:	ef 91       	pop	r30
      740:	bf 91       	pop	r27
@@ -1413,19 +1413,19 @@ void deleteRfid(int index)	//RFID 저장값 삭제
      7c6:	9a 81       	ldd	r25, Y+2	; 0x02
      7c8:	ab 81       	ldd	r26, Y+3	; 0x03
      7ca:	bc 81       	ldd	r27, Y+4	; 0x04
-     7cc:	80 93 fa 01 	sts	0x01FA, r24	; 0x8001fa <currentRfidData>
-     7d0:	90 93 fb 01 	sts	0x01FB, r25	; 0x8001fb <currentRfidData+0x1>
-     7d4:	a0 93 fc 01 	sts	0x01FC, r26	; 0x8001fc <currentRfidData+0x2>
-     7d8:	b0 93 fd 01 	sts	0x01FD, r27	; 0x8001fd <currentRfidData+0x3>
+     7cc:	80 93 e8 01 	sts	0x01E8, r24	; 0x8001e8 <currentRfidData>
+     7d0:	90 93 e9 01 	sts	0x01E9, r25	; 0x8001e9 <currentRfidData+0x1>
+     7d4:	a0 93 ea 01 	sts	0x01EA, r26	; 0x8001ea <currentRfidData+0x2>
+     7d8:	b0 93 eb 01 	sts	0x01EB, r27	; 0x8001eb <currentRfidData+0x3>
      7dc:	44 e0       	ldi	r20, 0x04	; 4
-     7de:	6a ef       	ldi	r22, 0xFA	; 250
+     7de:	68 ee       	ldi	r22, 0xE8	; 232
      7e0:	71 e0       	ldi	r23, 0x01	; 1
-     7e2:	8f ef       	ldi	r24, 0xFF	; 255
+     7e2:	8d ee       	ldi	r24, 0xED	; 237
      7e4:	91 e0       	ldi	r25, 0x01	; 1
      7e6:	bd df       	rcall	.-134    	; 0x762 <arrayEqual>
      7e8:	88 23       	and	r24, r24
      7ea:	19 f0       	breq	.+6      	; 0x7f2 <readRfid+0x5e>
-     7ec:	10 92 dc 01 	sts	0x01DC, r1	; 0x8001dc <__data_end>
+     7ec:	10 92 ca 01 	sts	0x01CA, r1	; 0x8001ca <__data_end>
      7f0:	0c c0       	rjmp	.+24     	; 0x80a <readRfid+0x76>
      7f2:	89 81       	ldd	r24, Y+1	; 0x01
      7f4:	9a 81       	ldd	r25, Y+2	; 0x02
@@ -1437,15 +1437,15 @@ void deleteRfid(int index)	//RFID 저장값 삭제
      800:	93 83       	std	Z+3, r25	; 0x03
      802:	82 83       	std	Z+2, r24	; 0x02
      804:	81 e0       	ldi	r24, 0x01	; 1
-     806:	80 93 dc 01 	sts	0x01DC, r24	; 0x8001dc <__data_end>
-     80a:	80 91 fa 01 	lds	r24, 0x01FA	; 0x8001fa <currentRfidData>
-     80e:	90 91 fb 01 	lds	r25, 0x01FB	; 0x8001fb <currentRfidData+0x1>
-     812:	a0 91 fc 01 	lds	r26, 0x01FC	; 0x8001fc <currentRfidData+0x2>
-     816:	b0 91 fd 01 	lds	r27, 0x01FD	; 0x8001fd <currentRfidData+0x3>
-     81a:	80 93 ff 01 	sts	0x01FF, r24	; 0x8001ff <lastRfidData>
-     81e:	90 93 00 02 	sts	0x0200, r25	; 0x800200 <lastRfidData+0x1>
-     822:	a0 93 01 02 	sts	0x0201, r26	; 0x800201 <lastRfidData+0x2>
-     826:	b0 93 02 02 	sts	0x0202, r27	; 0x800202 <lastRfidData+0x3>
+     806:	80 93 ca 01 	sts	0x01CA, r24	; 0x8001ca <__data_end>
+     80a:	80 91 e8 01 	lds	r24, 0x01E8	; 0x8001e8 <currentRfidData>
+     80e:	90 91 e9 01 	lds	r25, 0x01E9	; 0x8001e9 <currentRfidData+0x1>
+     812:	a0 91 ea 01 	lds	r26, 0x01EA	; 0x8001ea <currentRfidData+0x2>
+     816:	b0 91 eb 01 	lds	r27, 0x01EB	; 0x8001eb <currentRfidData+0x3>
+     81a:	80 93 ed 01 	sts	0x01ED, r24	; 0x8001ed <lastRfidData>
+     81e:	90 93 ee 01 	sts	0x01EE, r25	; 0x8001ee <lastRfidData+0x1>
+     822:	a0 93 ef 01 	sts	0x01EF, r26	; 0x8001ef <lastRfidData+0x2>
+     826:	b0 93 f0 01 	sts	0x01F0, r27	; 0x8001f0 <lastRfidData+0x3>
      82a:	be 01       	movw	r22, r28
      82c:	6f 5f       	subi	r22, 0xFF	; 255
      82e:	7f 4f       	sbci	r23, 0xFF	; 255
@@ -1456,7 +1456,7 @@ void deleteRfid(int index)	//RFID 저장값 삭제
      838:	ab dd       	rcall	.-1194   	; 0x390 <mfrc522_get_card_serial>
      83a:	0d c0       	rjmp	.+26     	; 0x856 <readRfid+0xc2>
      83c:	fc 01       	movw	r30, r24
-     83e:	e1 50       	subi	r30, 0x01	; 1
+     83e:	e3 51       	subi	r30, 0x13	; 19
      840:	fe 4f       	sbci	r31, 0xFE	; 254
      842:	10 82       	st	Z, r1
      844:	01 96       	adiw	r24, 0x01	; 1
@@ -1466,7 +1466,7 @@ void deleteRfid(int index)	//RFID 저장값 삭제
      84c:	84 30       	cpi	r24, 0x04	; 4
      84e:	91 05       	cpc	r25, r1
      850:	ac f3       	brlt	.-22     	; 0x83c <readRfid+0xa8>
-     852:	10 92 dc 01 	sts	0x01DC, r1	; 0x8001dc <__data_end>
+     852:	10 92 ca 01 	sts	0x01CA, r1	; 0x8001ca <__data_end>
      856:	60 96       	adiw	r28, 0x10	; 16
      858:	0f b6       	in	r0, 0x3f	; 63
      85a:	f8 94       	cli
@@ -1492,10 +1492,10 @@ void deleteRfid(int index)	//RFID 저장값 삭제
      87e:	90 0d       	add	r25, r0
      880:	11 24       	eor	r1, r1
      882:	44 e0       	ldi	r20, 0x04	; 4
-     884:	6f ed       	ldi	r22, 0xDF	; 223
+     884:	6d ec       	ldi	r22, 0xCD	; 205
      886:	71 e0       	ldi	r23, 0x01	; 1
-     888:	80 5f       	subi	r24, 0xF0	; 240
-     88a:	9d 4f       	sbci	r25, 0xFD	; 253
+     888:	82 50       	subi	r24, 0x02	; 2
+     88a:	9e 4f       	sbci	r25, 0xFE	; 254
      88c:	6a df       	rcall	.-300    	; 0x762 <arrayEqual>
      88e:	81 11       	cpse	r24, r1
      890:	07 c0       	rjmp	.+14     	; 0x8a0 <searchEmptyMemory+0x34>
@@ -1529,8 +1529,8 @@ void deleteRfid(int index)	//RFID 저장값 삭제
      8c4:	11 24       	eor	r1, r1
      8c6:	44 e0       	ldi	r20, 0x04	; 4
      8c8:	b8 01       	movw	r22, r16
-     8ca:	80 5f       	subi	r24, 0xF0	; 240
-     8cc:	9d 4f       	sbci	r25, 0xFD	; 253
+     8ca:	82 50       	subi	r24, 0x02	; 2
+     8cc:	9e 4f       	sbci	r25, 0xFE	; 254
      8ce:	49 df       	rcall	.-366    	; 0x762 <arrayEqual>
      8d0:	81 11       	cpse	r24, r1
      8d2:	0a c0       	rjmp	.+20     	; 0x8e8 <checkRfid+0x3e>
@@ -1538,7 +1538,7 @@ void deleteRfid(int index)	//RFID 저장값 삭제
      8d6:	c5 30       	cpi	r28, 0x05	; 5
      8d8:	d1 05       	cpc	r29, r1
      8da:	7c f3       	brlt	.-34     	; 0x8ba <checkRfid+0x10>
-     8dc:	83 e4       	ldi	r24, 0x43	; 67
+     8dc:	8b e3       	ldi	r24, 0x3B	; 59
      8de:	91 e0       	ldi	r25, 0x01	; 1
      8e0:	aa dd       	rcall	.-1196   	; 0x436 <USART0_Tx_String>
      8e2:	85 e0       	ldi	r24, 0x05	; 5
@@ -1574,14 +1574,14 @@ void deleteRfid(int index)	//RFID 저장값 삭제
      91a:	90 0d       	add	r25, r0
      91c:	11 24       	eor	r1, r1
      91e:	fc 01       	movw	r30, r24
-     920:	ed 5f       	subi	r30, 0xFD	; 253
-     922:	fd 4f       	sbci	r31, 0xFD	; 253
+     920:	ef 50       	subi	r30, 0x0F	; 15
+     922:	fe 4f       	sbci	r31, 0xFE	; 254
      924:	50 89       	ldd	r21, Z+16	; 0x10
      926:	47 85       	ldd	r20, Z+15	; 0x0f
      928:	36 85       	ldd	r19, Z+14	; 0x0e
      92a:	25 85       	ldd	r18, Z+13	; 0x0d
-     92c:	8b 5f       	subi	r24, 0xFB	; 251
-     92e:	9d 4f       	sbci	r25, 0xFD	; 253
+     92c:	8d 50       	subi	r24, 0x0D	; 13
+     92e:	9e 4f       	sbci	r25, 0xFE	; 254
      930:	65 2f       	mov	r22, r21
      932:	6f 70       	andi	r22, 0x0F	; 15
      934:	1f 92       	push	r1
@@ -1620,7 +1620,7 @@ void deleteRfid(int index)	//RFID 저장값 삭제
      976:	8f 93       	push	r24
      978:	80 81       	ld	r24, Z
      97a:	8f 93       	push	r24
-     97c:	81 e6       	ldi	r24, 0x61	; 97
+     97c:	89 e5       	ldi	r24, 0x59	; 89
      97e:	91 e0       	ldi	r25, 0x01	; 1
      980:	9f 93       	push	r25
      982:	8f 93       	push	r24
@@ -1894,16 +1894,16 @@ void writeRfid(int index)	// eeprom값을 내부 변수에 저장
      ad8:	70 0d       	add	r23, r0
      ada:	11 24       	eor	r1, r1
      adc:	fb 01       	movw	r30, r22
-     ade:	ed 5f       	subi	r30, 0xFD	; 253
-     ae0:	fd 4f       	sbci	r31, 0xFD	; 253
+     ade:	ef 50       	subi	r30, 0x0F	; 15
+     ae0:	fe 4f       	sbci	r31, 0xFE	; 254
      ae2:	91 83       	std	Z+1, r25	; 0x01
      ae4:	80 83       	st	Z, r24
 	eeprom_read_data(index, RFID_data[index].RFID_name, RFID_data[index].RFID_value);
      ae6:	ab 01       	movw	r20, r22
-     ae8:	40 5f       	subi	r20, 0xF0	; 240
-     aea:	5d 4f       	sbci	r21, 0xFD	; 253
-     aec:	6b 5f       	subi	r22, 0xFB	; 251
-     aee:	7d 4f       	sbci	r23, 0xFD	; 253
+     ae8:	42 50       	subi	r20, 0x02	; 2
+     aea:	5e 4f       	sbci	r21, 0xFE	; 254
+     aec:	6d 50       	subi	r22, 0x0D	; 13
+     aee:	7e 4f       	sbci	r23, 0xFE	; 254
      af0:	ab cf       	rjmp	.-170    	; 0xa48 <eeprom_read_data>
      af2:	08 95       	ret
 
@@ -1916,51 +1916,51 @@ void init_RFID()
 {
      af4:	cf 93       	push	r28
      af6:	df 93       	push	r29
-	//초기값 지정
-	#if INITIAL_VALUE == 1
-	eeprom_update_data(0, "PJB1", data1);
-     af8:	45 e0       	ldi	r20, 0x05	; 5
+	eeprom_update_data(1, "PJB2", data2);
+	eeprom_update_data(2, emptyName, emptyData);
+	eeprom_update_data(3, emptyName, emptyData);
+	eeprom_update_data(4, emptyName, emptyData);
+	#else if INITIAL_VALUE == 2
+	eeprom_update_data(0, emptyName, emptyData);
+     af8:	4d ec       	ldi	r20, 0xCD	; 205
      afa:	51 e0       	ldi	r21, 0x01	; 1
-     afc:	69 e7       	ldi	r22, 0x79	; 121
+     afc:	61 ed       	ldi	r22, 0xD1	; 209
      afe:	71 e0       	ldi	r23, 0x01	; 1
      b00:	80 e0       	ldi	r24, 0x00	; 0
      b02:	90 e0       	ldi	r25, 0x00	; 0
      b04:	58 df       	rcall	.-336    	; 0x9b6 <eeprom_update_data>
-	eeprom_update_data(1, "PJB2", data2);
-     b06:	41 e0       	ldi	r20, 0x01	; 1
+	eeprom_update_data(1, emptyName, emptyData);
+     b06:	4d ec       	ldi	r20, 0xCD	; 205
      b08:	51 e0       	ldi	r21, 0x01	; 1
-     b0a:	6e e7       	ldi	r22, 0x7E	; 126
+     b0a:	61 ed       	ldi	r22, 0xD1	; 209
      b0c:	71 e0       	ldi	r23, 0x01	; 1
      b0e:	81 e0       	ldi	r24, 0x01	; 1
      b10:	90 e0       	ldi	r25, 0x00	; 0
      b12:	51 df       	rcall	.-350    	; 0x9b6 <eeprom_update_data>
 	eeprom_update_data(2, emptyName, emptyData);
-     b14:	4f ed       	ldi	r20, 0xDF	; 223
+     b14:	4d ec       	ldi	r20, 0xCD	; 205
      b16:	51 e0       	ldi	r21, 0x01	; 1
-     b18:	63 ee       	ldi	r22, 0xE3	; 227
+     b18:	61 ed       	ldi	r22, 0xD1	; 209
      b1a:	71 e0       	ldi	r23, 0x01	; 1
      b1c:	82 e0       	ldi	r24, 0x02	; 2
      b1e:	90 e0       	ldi	r25, 0x00	; 0
      b20:	4a df       	rcall	.-364    	; 0x9b6 <eeprom_update_data>
 	eeprom_update_data(3, emptyName, emptyData);
-     b22:	4f ed       	ldi	r20, 0xDF	; 223
+     b22:	4d ec       	ldi	r20, 0xCD	; 205
      b24:	51 e0       	ldi	r21, 0x01	; 1
-     b26:	63 ee       	ldi	r22, 0xE3	; 227
+     b26:	61 ed       	ldi	r22, 0xD1	; 209
      b28:	71 e0       	ldi	r23, 0x01	; 1
      b2a:	83 e0       	ldi	r24, 0x03	; 3
      b2c:	90 e0       	ldi	r25, 0x00	; 0
      b2e:	43 df       	rcall	.-378    	; 0x9b6 <eeprom_update_data>
 	eeprom_update_data(4, emptyName, emptyData);
-     b30:	4f ed       	ldi	r20, 0xDF	; 223
+     b30:	4d ec       	ldi	r20, 0xCD	; 205
      b32:	51 e0       	ldi	r21, 0x01	; 1
-     b34:	63 ee       	ldi	r22, 0xE3	; 227
+     b34:	61 ed       	ldi	r22, 0xD1	; 209
      b36:	71 e0       	ldi	r23, 0x01	; 1
      b38:	84 e0       	ldi	r24, 0x04	; 4
      b3a:	90 e0       	ldi	r25, 0x00	; 0
      b3c:	3c df       	rcall	.-392    	; 0x9b6 <eeprom_update_data>
-	eeprom_update_data(2, emptyName, emptyData);
-	eeprom_update_data(3, emptyName, emptyData);
-	eeprom_update_data(4, emptyName, emptyData);
 	#endif
 	
 	for(int i=0; i<5; i++)	//eeprom값을 변수에 저장
@@ -2019,7 +2019,7 @@ void storeRfid(uint8_t data[4])	//RFID값 읽어서 저장
      b7a:	34 f5       	brge	.+76     	; 0xbc8 <storeRfid+0x72>
 	{
 		USART0_Tx_String("Please enter the name\n");	//이름 입력받음
-     b7c:	83 e8       	ldi	r24, 0x83	; 131
+     b7c:	81 e7       	ldi	r24, 0x71	; 113
      b7e:	91 e0       	ldi	r25, 0x01	; 1
      b80:	5a dc       	rcall	.-1868   	; 0x436 <USART0_Tx_String>
 		char tmpName[11];
@@ -2078,7 +2078,7 @@ void storeRfid(uint8_t data[4])	//RFID값 읽어서 저장
 		_delay_ms(200);
 		USART0_Tx_String("\nregistration completed");
      bbe:	00 00       	nop
-     bc0:	8a e9       	ldi	r24, 0x9A	; 154
+     bc0:	88 e8       	ldi	r24, 0x88	; 136
      bc2:	91 e0       	ldi	r25, 0x01	; 1
      bc4:	38 dc       	rcall	.-1936   	; 0x436 <USART0_Tx_String>
 	}
@@ -2086,7 +2086,7 @@ void storeRfid(uint8_t data[4])	//RFID값 읽어서 저장
 	{
 		USART0_Tx_String("You can no longer register.\n");
      bc6:	03 c0       	rjmp	.+6      	; 0xbce <storeRfid+0x78>
-     bc8:	82 eb       	ldi	r24, 0xB2	; 178
+     bc8:	80 ea       	ldi	r24, 0xA0	; 160
      bca:	91 e0       	ldi	r25, 0x01	; 1
      bcc:	34 dc       	rcall	.-1944   	; 0x436 <USART0_Tx_String>
 	}
@@ -2117,9 +2117,9 @@ bool eeprom_delete_data_index(int index)	// index로 데이터 지우기
      bec:	3c f4       	brge	.+14     	; 0xbfc <eeprom_delete_data_index+0x14>
 	{
 		eeprom_update_data(index, emptyName, emptyData);
-     bee:	4f ed       	ldi	r20, 0xDF	; 223
+     bee:	4d ec       	ldi	r20, 0xCD	; 205
      bf0:	51 e0       	ldi	r21, 0x01	; 1
-     bf2:	63 ee       	ldi	r22, 0xE3	; 227
+     bf2:	61 ed       	ldi	r22, 0xD1	; 209
      bf4:	71 e0       	ldi	r23, 0x01	; 1
      bf6:	df de       	rcall	.-578    	; 0x9b6 <eeprom_update_data>
 		return true;
@@ -2172,7 +2172,7 @@ ISR(USART0_RX_vect)
      c3c:	8a b9       	out	0x0a, r24	; 10
 	chRxTemp0 = UDR0;
      c3e:	8c b1       	in	r24, 0x0c	; 12
-     c40:	80 93 fe 01 	sts	0x01FE, r24	; 0x8001fe <chRxTemp0>
+     c40:	80 93 ec 01 	sts	0x01EC, r24	; 0x8001ec <chRxTemp0>
 	char tmpName[11];
 	uint8_t tmpData[4];
 	switch(chRxTemp0)
@@ -2244,7 +2244,7 @@ ISR(USART0_RX_vect)
      c90:	c0 97       	sbiw	r24, 0x30	; 48
      c92:	aa df       	rcall	.-172    	; 0xbe8 <eeprom_delete_data_index>
 		writeRfid(chRxTemp0-48);	// 변수 업데이트
-     c94:	80 91 fe 01 	lds	r24, 0x01FE	; 0x8001fe <chRxTemp0>
+     c94:	80 91 ec 01 	lds	r24, 0x01EC	; 0x8001ec <chRxTemp0>
      c98:	90 e0       	ldi	r25, 0x00	; 0
      c9a:	c0 97       	sbiw	r24, 0x30	; 48
      c9c:	19 df       	rcall	.-462    	; 0xad0 <writeRfid>
@@ -2499,7 +2499,7 @@ int main(void)
      df4:	8b 7f       	andi	r24, 0xFB	; 251
      df6:	80 83       	st	Z, r24
 			PORT_CLR(LIGHT3_PORT);
-     df8:	80 91 de 01 	lds	r24, 0x01DE	; 0x8001de <flag_isBuzzerRunning>
+     df8:	80 91 cc 01 	lds	r24, 0x01CC	; 0x8001cc <flag_isBuzzerRunning>
 		}
 		if(flag_isBuzzerRunning)	// 부저가 울리고 있을 때는 버튼입력 최우선
      dfc:	88 23       	and	r24, r24
@@ -2544,7 +2544,7 @@ int main(void)
 			readRfid(rfidData);	//rfid 읽기
      e36:	01 96       	adiw	r24, 0x01	; 1
      e38:	ad dc       	rcall	.-1702   	; 0x794 <readRfid>
-     e3a:	80 91 dc 01 	lds	r24, 0x01DC	; 0x8001dc <__data_end>
+     e3a:	80 91 ca 01 	lds	r24, 0x01CA	; 0x8001ca <__data_end>
 			if(flag_isRFIDReceived)	//수신되었는지 확인
      e3e:	88 23       	and	r24, r24
      e40:	d9 f0       	breq	.+54     	; 0xe78 <main+0x152>
@@ -2557,7 +2557,7 @@ int main(void)
      e4a:	05 97       	sbiw	r24, 0x05	; 5
      e4c:	84 f4       	brge	.+32     	; 0xe6e <main+0x148>
 				if(tmpInt < 5)	//현재 저장되어있는 값인지 확인
-     e4e:	8f ec       	ldi	r24, 0xCF	; 207
+     e4e:	8d eb       	ldi	r24, 0xBD	; 189
 				{
 					USART0_Tx_String("Welcome,");
      e50:	91 e0       	ldi	r25, 0x01	; 1
@@ -2569,8 +2569,8 @@ int main(void)
      e5a:	21 9f       	mul	r18, r17
      e5c:	90 0d       	add	r25, r0
      e5e:	11 24       	eor	r1, r1
-     e60:	8b 5f       	subi	r24, 0xFB	; 251
-     e62:	9d 4f       	sbci	r25, 0xFD	; 253
+     e60:	8d 50       	subi	r24, 0x0D	; 13
+     e62:	9e 4f       	sbci	r25, 0xFE	; 254
      e64:	e8 da       	rcall	.-2608   	; 0x436 <USART0_Tx_String>
 					USART0_Tx('\n');
      e66:	8a e0       	ldi	r24, 0x0A	; 10
@@ -2585,7 +2585,7 @@ int main(void)
 				{
 					storeRfid(rfidData);
      e72:	71 de       	rcall	.-798    	; 0xb56 <storeRfid>
-     e74:	10 92 dc 01 	sts	0x01DC, r1	; 0x8001dc <__data_end>
+     e74:	10 92 ca 01 	sts	0x01CA, r1	; 0x8001ca <__data_end>
      e78:	85 b3       	in	r24, 0x15	; 21
 				}
 				flag_isRFIDReceived = false;
@@ -2597,10 +2597,10 @@ int main(void)
      e82:	81 11       	cpse	r24, r1
 			if(!flag_autoClose && flag_isButtonPressed)	// 자동 잠금 해제 상태일 때(버튼 누르고 문을 열었다가 닫았을 때)
      e84:	10 c0       	rjmp	.+32     	; 0xea6 <main+0x180>
-     e86:	80 91 dd 01 	lds	r24, 0x01DD	; 0x8001dd <flag_isButtonPressed>
+     e86:	80 91 cb 01 	lds	r24, 0x01CB	; 0x8001cb <flag_isButtonPressed>
      e8a:	88 23       	and	r24, r24
      e8c:	61 f0       	breq	.+24     	; 0xea6 <main+0x180>
-     e8e:	10 92 dd 01 	sts	0x01DD, r1	; 0x8001dd <flag_isButtonPressed>
+     e8e:	10 92 cb 01 	sts	0x01CB, r1	; 0x8001cb <flag_isButtonPressed>
 			{
 				flag_isButtonPressed = false;	// 버튼 눌림 플래그 초기화
      e92:	9f ef       	ldi	r25, 0xFF	; 255
@@ -2623,7 +2623,7 @@ int main(void)
 			{
 				openDoor();	// 문열기
      eac:	81 e0       	ldi	r24, 0x01	; 1
-     eae:	80 93 dd 01 	sts	0x01DD, r24	; 0x8001dd <flag_isButtonPressed>
+     eae:	80 93 cb 01 	sts	0x01CB, r24	; 0x8001cb <flag_isButtonPressed>
 				flag_isButtonPressed = true;	// 버튼 눌림 플래그 set
      eb2:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
 				flag_autoClose = true;
@@ -2645,27 +2645,27 @@ int main(void)
      ece:	8c 3b       	cpi	r24, 0xBC	; 188
      ed0:	92 40       	sbci	r25, 0x02	; 2
      ed2:	bc f4       	brge	.+46     	; 0xf02 <main+0x1dc>
-     ed4:	80 91 f8 01 	lds	r24, 0x01F8	; 0x8001f8 <shockCount>
+     ed4:	80 91 e6 01 	lds	r24, 0x01E6	; 0x8001e6 <shockCount>
 			{
 				shockCount++;
-     ed8:	90 91 f9 01 	lds	r25, 0x01F9	; 0x8001f9 <shockCount+0x1>
+     ed8:	90 91 e7 01 	lds	r25, 0x01E7	; 0x8001e7 <shockCount+0x1>
      edc:	01 96       	adiw	r24, 0x01	; 1
-     ede:	90 93 f9 01 	sts	0x01F9, r25	; 0x8001f9 <shockCount+0x1>
-     ee2:	80 93 f8 01 	sts	0x01F8, r24	; 0x8001f8 <shockCount>
+     ede:	90 93 e7 01 	sts	0x01E7, r25	; 0x8001e7 <shockCount+0x1>
+     ee2:	80 93 e6 01 	sts	0x01E6, r24	; 0x8001e6 <shockCount>
 				if(shockCount > 2){
-     ee6:	80 91 f8 01 	lds	r24, 0x01F8	; 0x8001f8 <shockCount>
-     eea:	90 91 f9 01 	lds	r25, 0x01F9	; 0x8001f9 <shockCount+0x1>
+     ee6:	80 91 e6 01 	lds	r24, 0x01E6	; 0x8001e6 <shockCount>
+     eea:	90 91 e7 01 	lds	r25, 0x01E7	; 0x8001e7 <shockCount+0x1>
 					USART0_Tx_String("112");	// 블루투스 112 전송
      eee:	03 97       	sbiw	r24, 0x03	; 3
      ef0:	40 f0       	brcs	.+16     	; 0xf02 <main+0x1dc>
-     ef2:	85 e1       	ldi	r24, 0x15	; 21
+     ef2:	8d e0       	ldi	r24, 0x0D	; 13
      ef4:	91 e0       	ldi	r25, 0x01	; 1
 					urgentButton();	// 1byte 데이터 수신 대기
      ef6:	9f da       	rcall	.-2754   	; 0x436 <USART0_Tx_String>
      ef8:	15 db       	rcall	.-2518   	; 0x524 <urgentButton>
 					shockCount = 0;	// 충격 카운트 초기화
-     efa:	10 92 f9 01 	sts	0x01F9, r1	; 0x8001f9 <shockCount+0x1>
-     efe:	10 92 f8 01 	sts	0x01F8, r1	; 0x8001f8 <shockCount>
+     efa:	10 92 e7 01 	sts	0x01E7, r1	; 0x8001e7 <shockCount+0x1>
+     efe:	10 92 e6 01 	sts	0x01E6, r1	; 0x8001e6 <shockCount>
 				}
 			}
 			if(readADC(FIRE) > FIRE_THRESHOLD)	// 화재 발생
@@ -2676,7 +2676,7 @@ int main(void)
      f0a:	91 05       	cpc	r25, r1
      f0c:	0c f4       	brge	.+2      	; 0xf10 <main+0x1ea>
      f0e:	65 cf       	rjmp	.-310    	; 0xdda <main+0xb4>
-     f10:	88 ed       	ldi	r24, 0xD8	; 216
+     f10:	86 ec       	ldi	r24, 0xC6	; 198
 			{
 				USART0_Tx_String("119");	// 블루투스 119 전송
      f12:	91 e0       	ldi	r25, 0x01	; 1

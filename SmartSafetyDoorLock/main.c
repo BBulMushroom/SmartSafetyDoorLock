@@ -15,7 +15,7 @@
 #include <mfrc522.h>
 #include <spi.h>
 #define DEBUGMODE 0	// 0:normal, 1:debug
-#define INITIAL_VALUE 1	// 0: none, 1:store null data, 2:set initial values(rfid)
+#define INITIAL_VALUE 0	// 0: none, 1:store null data, 2:set initial values(rfid)
 /////////////////////////////////////////////////////////////////////////////////////
 // adc threshold
 #define FIRE_THRESHOLD 250	//normal 192, active 500
