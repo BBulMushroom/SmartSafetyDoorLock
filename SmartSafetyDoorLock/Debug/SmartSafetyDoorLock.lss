@@ -15,19 +15,19 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
   5 .debug_aranges 000001f0  00000000  00000000  00001708  2**3
                   CONTENTS, READONLY, DEBUGGING
-  6 .debug_info   000024a0  00000000  00000000  000018f8  2**0
+  6 .debug_info   0000248e  00000000  00000000  000018f8  2**0
                   CONTENTS, READONLY, DEBUGGING
-  7 .debug_abbrev 00000e1f  00000000  00000000  00003d98  2**0
+  7 .debug_abbrev 00000e1f  00000000  00000000  00003d86  2**0
                   CONTENTS, READONLY, DEBUGGING
-  8 .debug_line   0000139e  00000000  00000000  00004bb7  2**0
+  8 .debug_line   0000139e  00000000  00000000  00004ba5  2**0
                   CONTENTS, READONLY, DEBUGGING
-  9 .debug_frame  0000059c  00000000  00000000  00005f58  2**2
+  9 .debug_frame  0000059c  00000000  00000000  00005f44  2**2
                   CONTENTS, READONLY, DEBUGGING
- 10 .debug_str    000008c6  00000000  00000000  000064f4  2**0
+ 10 .debug_str    000008b8  00000000  00000000  000064e0  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00001788  00000000  00000000  00006dba  2**0
+ 11 .debug_loc    00001788  00000000  00000000  00006d98  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000001e8  00000000  00000000  00008542  2**0
+ 12 .debug_ranges 000001e8  00000000  00000000  00008520  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -1091,7 +1091,7 @@ uint8_t spi_transmit(uint8_t data)
 
 000004fc <init_Buzzer>:
 }
-void deleteRfid(int index)	//RFID 저장값 삭제
+void deleteRfid(int index)	//Delete rfid data in local variable
 {
 	RFID_data[index].RFID_index = 0;
 	memset(RFID_data[index].RFID_name, 0, sizeof(RFID_data[index].RFID_name));
@@ -1654,7 +1654,7 @@ void deleteRfid(int index)	//RFID 저장값 삭제
 }
 //[0].. [9][10] [11][12][13][14] [15]..
 //name1....'\0' data............ name2...
-void eeprom_update_data(int index, char name[11], uint8_t data[4])	// 값 받아 데이터 저장
+void eeprom_update_data(int index, char name[11], uint8_t data[4])	//store data in eeprom
 {
      9b6:	cf 92       	push	r12
      9b8:	df 92       	push	r13
@@ -1667,12 +1667,12 @@ void eeprom_update_data(int index, char name[11], uint8_t data[4])	// 값 받아
      9c6:	8c 01       	movw	r16, r24
      9c8:	6b 01       	movw	r12, r22
      9ca:	7a 01       	movw	r14, r20
-	for(int i=0; i<11; i++)	// name 저장
+	for(int i=0; i<11; i++)	//store name
      9cc:	c0 e0       	ldi	r28, 0x00	; 0
      9ce:	d0 e0       	ldi	r29, 0x00	; 0
      9d0:	1c c0       	rjmp	.+56     	; 0xa0a <eeprom_update_data+0x54>
 	{
-		if(name[i] == 0)	// null문자가 아닐때까지 저장
+		if(name[i] == 0)	//until is not null
      9d2:	f6 01       	movw	r30, r12
      9d4:	ec 0f       	add	r30, r28
      9d6:	fd 1f       	adc	r31, r29
@@ -1693,13 +1693,13 @@ void eeprom_update_data(int index, char name[11], uint8_t data[4])	// 값 받아
 }
 //[0].. [9][10] [11][12][13][14] [15]..
 //name1....'\0' data............ name2...
-void eeprom_update_data(int index, char name[11], uint8_t data[4])	// 값 받아 데이터 저장
+void eeprom_update_data(int index, char name[11], uint8_t data[4])	//store data in eeprom
 {
-	for(int i=0; i<11; i++)	// name 저장
+	for(int i=0; i<11; i++)	//store name
      9f0:	c0 e0       	ldi	r28, 0x00	; 0
      9f2:	d0 e0       	ldi	r29, 0x00	; 0
      9f4:	1d c0       	rjmp	.+58     	; 0xa30 <eeprom_update_data+0x7a>
-		if(name[i] == 0)	// null문자가 아닐때까지 저장
+		if(name[i] == 0)	//until is not null
 		{
 			eeprom_update_byte(index*15 + i, 0);
 			break;
@@ -1717,9 +1717,9 @@ void eeprom_update_data(int index, char name[11], uint8_t data[4])	// 값 받아
 }
 //[0].. [9][10] [11][12][13][14] [15]..
 //name1....'\0' data............ name2...
-void eeprom_update_data(int index, char name[11], uint8_t data[4])	// 값 받아 데이터 저장
+void eeprom_update_data(int index, char name[11], uint8_t data[4])	//store data in eeprom
 {
-	for(int i=0; i<11; i++)	// name 저장
+	for(int i=0; i<11; i++)	//store name
      a08:	21 96       	adiw	r28, 0x01	; 1
      a0a:	cb 30       	cpi	r28, 0x0B	; 11
      a0c:	d1 05       	cpc	r29, r1
@@ -1728,7 +1728,7 @@ void eeprom_update_data(int index, char name[11], uint8_t data[4])	// 값 받아
 		}
 		eeprom_update_byte(index*15 + i, name[i]);
 	}
-	for(int i=0; i<4; i++)	// data 저장
+	for(int i=0; i<4; i++)	//store data
 	{
 		eeprom_update_byte(index*15 + 11 + i, data[i]);
      a12:	f7 01       	movw	r30, r14
@@ -1750,7 +1750,7 @@ void eeprom_update_data(int index, char name[11], uint8_t data[4])	// 값 받아
 		}
 		eeprom_update_byte(index*15 + i, name[i]);
 	}
-	for(int i=0; i<4; i++)	// data 저장
+	for(int i=0; i<4; i++)	//store data
      a2e:	21 96       	adiw	r28, 0x01	; 1
      a30:	c4 30       	cpi	r28, 0x04	; 4
      a32:	d1 05       	cpc	r29, r1
@@ -1770,7 +1770,7 @@ void eeprom_update_data(int index, char name[11], uint8_t data[4])	// 값 받아
      a46:	08 95       	ret
 
 00000a48 <eeprom_read_data>:
-void eeprom_read_data(int index, char name[11], uint8_t data[4])	// index로 데이터 읽기
+void eeprom_read_data(int index, char name[11], uint8_t data[4])	//read data by index
 {
      a48:	cf 92       	push	r12
      a4a:	df 92       	push	r13
@@ -1783,12 +1783,12 @@ void eeprom_read_data(int index, char name[11], uint8_t data[4])	// index로 데
      a58:	8c 01       	movw	r16, r24
      a5a:	6b 01       	movw	r12, r22
      a5c:	7a 01       	movw	r14, r20
-	for(int i=0; i<11; i++)	// name 읽기
+	for(int i=0; i<11; i++)	//read name
      a5e:	c0 e0       	ldi	r28, 0x00	; 0
      a60:	d0 e0       	ldi	r29, 0x00	; 0
      a62:	16 c0       	rjmp	.+44     	; 0xa90 <eeprom_read_data+0x48>
 	{
-		if(eeprom_read_byte(index*15 + i) == 0)	// null이면 읽기 종료
+		if(eeprom_read_byte(index*15 + i) == 0)	//if null, end
      a64:	2f e0       	ldi	r18, 0x0F	; 15
      a66:	20 9f       	mul	r18, r16
      a68:	c0 01       	movw	r24, r0
@@ -1808,13 +1808,13 @@ void eeprom_read_data(int index, char name[11], uint8_t data[4])	// index로 데
 		eeprom_update_byte(index*15 + 11 + i, data[i]);
 	}
 }
-void eeprom_read_data(int index, char name[11], uint8_t data[4])	// index로 데이터 읽기
+void eeprom_read_data(int index, char name[11], uint8_t data[4])	//read data by index
 {
-	for(int i=0; i<11; i++)	// name 읽기
+	for(int i=0; i<11; i++)	//read name
      a80:	c0 e0       	ldi	r28, 0x00	; 0
      a82:	d0 e0       	ldi	r29, 0x00	; 0
      a84:	19 c0       	rjmp	.+50     	; 0xab8 <eeprom_read_data+0x70>
-		if(eeprom_read_byte(index*15 + i) == 0)	// null이면 읽기 종료
+		if(eeprom_read_byte(index*15 + i) == 0)	//if null, end
 		{
 			name[i] = 0;
 			break;
@@ -1827,9 +1827,9 @@ void eeprom_read_data(int index, char name[11], uint8_t data[4])	// index로 데
 		eeprom_update_byte(index*15 + 11 + i, data[i]);
 	}
 }
-void eeprom_read_data(int index, char name[11], uint8_t data[4])	// index로 데이터 읽기
+void eeprom_read_data(int index, char name[11], uint8_t data[4])	//read data by index
 {
-	for(int i=0; i<11; i++)	// name 읽기
+	for(int i=0; i<11; i++)	//read name
      a8e:	21 96       	adiw	r28, 0x01	; 1
      a90:	cb 30       	cpi	r28, 0x0B	; 11
      a92:	d1 05       	cpc	r29, r1
@@ -1838,7 +1838,7 @@ void eeprom_read_data(int index, char name[11], uint8_t data[4])	// index로 데
 		}
 		name[i] = eeprom_read_byte(index*15 + i);
 	}
-	for(int i=0; i<4; i++)	// data 읽기
+	for(int i=0; i<4; i++)	//read data
 	{
 		data[i] = eeprom_read_byte(index*15 + 11 + i);
      a98:	67 01       	movw	r12, r14
@@ -1861,7 +1861,7 @@ void eeprom_read_data(int index, char name[11], uint8_t data[4])	// index로 데
 		}
 		name[i] = eeprom_read_byte(index*15 + i);
 	}
-	for(int i=0; i<4; i++)	// data 읽기
+	for(int i=0; i<4; i++)	//read data
      ab6:	21 96       	adiw	r28, 0x01	; 1
      ab8:	c4 30       	cpi	r28, 0x04	; 4
      aba:	d1 05       	cpc	r29, r1
@@ -1882,9 +1882,9 @@ void eeprom_read_data(int index, char name[11], uint8_t data[4])	// index로 데
 
 00000ad0 <writeRfid>:
 	}
-	return 5;	//비어있지 않으면 5 반환
+	return 5;	//Return 5 if not empty
 }
-void writeRfid(int index)	// eeprom값을 내부 변수에 저장
+void writeRfid(int index)	//Save the eeprom value to local variable
 {
 	RFID_data[index].RFID_index = index;
      ad0:	21 e1       	ldi	r18, 0x11	; 17
@@ -1908,9 +1908,9 @@ void writeRfid(int index)	// eeprom값을 내부 변수에 저장
      af2:	08 95       	ret
 
 00000af4 <init_RFID>:
-//                      (폰에 데이터 저장)실행
-//
-
+}
+/////////////////////////////////////////////////////////////////////////////////
+// RFID
 
 void init_RFID()
 {
@@ -1963,7 +1963,7 @@ void init_RFID()
      b3c:	3c df       	rcall	.-392    	; 0x9b6 <eeprom_update_data>
 	#endif
 	
-	for(int i=0; i<5; i++)	//eeprom값을 변수에 저장
+	for(int i=0; i<5; i++)	//Save the eeprom value to local variable
      b3e:	c0 e0       	ldi	r28, 0x00	; 0
      b40:	d0 e0       	ldi	r29, 0x00	; 0
      b42:	03 c0       	rjmp	.+6      	; 0xb4a <init_RFID+0x56>
@@ -1977,7 +1977,7 @@ void init_RFID()
 	eeprom_update_data(4, emptyName, emptyData);
 	#endif
 	
-	for(int i=0; i<5; i++)	//eeprom값을 변수에 저장
+	for(int i=0; i<5; i++)	//Save the eeprom value to local variable
      b4a:	c5 30       	cpi	r28, 0x05	; 5
      b4c:	d1 05       	cpc	r29, r1
      b4e:	d4 f3       	brlt	.-12     	; 0xb44 <init_RFID+0x50>
@@ -1995,7 +1995,7 @@ void init_RFID()
 		flag_isRFIDReceived = false;
 	}
 }
-void storeRfid(uint8_t data[4])	//RFID값 읽어서 저장
+void storeRfid(uint8_t data[4])	//Read and save RFID value
 {
      b58:	ff 92       	push	r15
      b5a:	0f 93       	push	r16
@@ -2014,31 +2014,31 @@ void storeRfid(uint8_t data[4])	//RFID값 읽어서 저장
 	int index = searchEmptyMemory();
      b74:	7b de       	rcall	.-778    	; 0x86c <searchEmptyMemory>
      b76:	8c 01       	movw	r16, r24
-	if(index < 5)	//5개까지 저장 가능
+	if(index < 5)	//Can store up to 5
      b78:	05 97       	sbiw	r24, 0x05	; 5
      b7a:	34 f5       	brge	.+76     	; 0xbc8 <storeRfid+0x72>
 	{
-		USART0_Tx_String("Please enter the name\n");	//이름 입력받음
+		USART0_Tx_String("Please enter the name\n");	//name request
      b7c:	81 e7       	ldi	r24, 0x71	; 113
      b7e:	91 e0       	ldi	r25, 0x01	; 1
      b80:	5a dc       	rcall	.-1868   	; 0x436 <USART0_Tx_String>
 		char tmpName[11];
 		
-		USART0_Rx_String(tmpName, 11);	//10자리 받기(null까지 11자리)
+		USART0_Rx_String(tmpName, 11);	//Get 10 digits (11 digits include null)
      b82:	6b e0       	ldi	r22, 0x0B	; 11
      b84:	ce 01       	movw	r24, r28
      b86:	01 96       	adiw	r24, 0x01	; 1
      b88:	66 dc       	rcall	.-1844   	; 0x456 <USART0_Rx_String>
-		eeprom_update_data(index, tmpName, data);	//정보 저장
+		eeprom_update_data(index, tmpName, data);	//store data in the eeprom
      b8a:	a7 01       	movw	r20, r14
      b8c:	be 01       	movw	r22, r28
      b8e:	6f 5f       	subi	r22, 0xFF	; 255
      b90:	7f 4f       	sbci	r23, 0xFF	; 255
      b92:	c8 01       	movw	r24, r16
-		writeRfid(index);	// 변수에도 저장
+		writeRfid(index);	//also store in local variable
      b94:	10 df       	rcall	.-480    	; 0x9b6 <eeprom_update_data>
      b96:	c8 01       	movw	r24, r16
-		for(int i=0; i<5; i++)	// 폰으로 바뀐 데이터 포함 모두 전송
+		for(int i=0; i<5; i++)	//Send all data including data changed to the phone
      b98:	9b df       	rcall	.-202    	; 0xad0 <writeRfid>
      b9a:	00 e0       	ldi	r16, 0x00	; 0
      b9c:	10 e0       	ldi	r17, 0x00	; 0
@@ -2049,10 +2049,10 @@ void storeRfid(uint8_t data[4])	//RFID값 읽어서 저장
      ba2:	a9 de       	rcall	.-686    	; 0x8f6 <sendRfidInfo>
 		char tmpName[11];
 		
-		USART0_Rx_String(tmpName, 11);	//10자리 받기(null까지 11자리)
-		eeprom_update_data(index, tmpName, data);	//정보 저장
-		writeRfid(index);	// 변수에도 저장
-		for(int i=0; i<5; i++)	// 폰으로 바뀐 데이터 포함 모두 전송
+		USART0_Rx_String(tmpName, 11);	//Get 10 digits (11 digits include null)
+		eeprom_update_data(index, tmpName, data);	//store data in the eeprom
+		writeRfid(index);	//also store in local variable
+		for(int i=0; i<5; i++)	//Send all data including data changed to the phone
      ba4:	0f 5f       	subi	r16, 0xFF	; 255
      ba6:	1f 4f       	sbci	r17, 0xFF	; 255
      ba8:	05 30       	cpi	r16, 0x05	; 5
@@ -2082,7 +2082,7 @@ void storeRfid(uint8_t data[4])	//RFID값 읽어서 저장
      bc2:	91 e0       	ldi	r25, 0x01	; 1
      bc4:	38 dc       	rcall	.-1936   	; 0x436 <USART0_Tx_String>
 	}
-	else
+	else //already 5 data stored, error
 	{
 		USART0_Tx_String("You can no longer register.\n");
      bc6:	03 c0       	rjmp	.+6      	; 0xbce <storeRfid+0x78>
@@ -2109,7 +2109,7 @@ void storeRfid(uint8_t data[4])	//RFID값 읽어서 저장
 		data[i] = eeprom_read_byte(index*15 + 11 + i);
 	}
 }
-bool eeprom_delete_data_index(int index)	// index로 데이터 지우기
+bool eeprom_delete_data_index(int index)	//delete data by index
 {
 	if(index < 5)
      be8:	85 30       	cpi	r24, 0x05	; 5
@@ -2133,7 +2133,7 @@ bool eeprom_delete_data_index(int index)	// index로 데이터 지우기
 
 00000c00 <__vector_18>:
 	}
-	UCSR0B |= (1 << RXCIE0);	// 수신완료 인터럽트 설정
+	UCSR0B |= (1 << RXCIE0);	//set receive complete interrupt
 }
 
 ISR(USART0_RX_vect)
@@ -2166,7 +2166,7 @@ ISR(USART0_RX_vect)
      c32:	2f 97       	sbiw	r28, 0x0f	; 15
      c34:	de bf       	out	0x3e, r29	; 62
      c36:	cd bf       	out	0x3d, r28	; 61
-	UCSR0B &= ~(1 << RXCIE0);	// 수신완료 인터럽트 해제
+	UCSR0B &= ~(1 << RXCIE0);	//unset receive complete interrupt
      c38:	8a b1       	in	r24, 0x0a	; 10
      c3a:	8f 77       	andi	r24, 0x7F	; 127
      c3c:	8a b9       	out	0x0a, r24	; 10
@@ -2195,10 +2195,10 @@ ISR(USART0_RX_vect)
      c64:	40 c0       	rjmp	.+128    	; 0xce6 <__vector_18+0xe6>
      c66:	2e c0       	rjmp	.+92     	; 0xcc4 <__vector_18+0xc4>
 	{
-		case 'a':	// 저장된 데이터 모두 전송
+		case 'a':	//Send all stored data
 		for(int i=0; i<5; i++)
 		{
-			eeprom_read_data(i, tmpName, tmpData);	// 데이터 읽기
+			eeprom_read_data(i, tmpName, tmpData);	//read data from eeprom
      c68:	ae 01       	movw	r20, r28
      c6a:	44 5f       	subi	r20, 0xF4	; 244
      c6c:	5f 4f       	sbci	r21, 0xFF	; 255
@@ -2207,20 +2207,20 @@ ISR(USART0_RX_vect)
      c72:	7f 4f       	sbci	r23, 0xFF	; 255
      c74:	c8 01       	movw	r24, r16
      c76:	e8 de       	rcall	.-560    	; 0xa48 <eeprom_read_data>
-			sendRfidInfo(i);
+			sendRfidInfo(i);	//send
      c78:	c8 01       	movw	r24, r16
      c7a:	3d de       	rcall	.-902    	; 0x8f6 <sendRfidInfo>
 	char tmpName[11];
 	uint8_t tmpData[4];
 	switch(chRxTemp0)
 	{
-		case 'a':	// 저장된 데이터 모두 전송
+		case 'a':	//Send all stored data
 		for(int i=0; i<5; i++)
      c7c:	0f 5f       	subi	r16, 0xFF	; 255
      c7e:	1f 4f       	sbci	r17, 0xFF	; 255
      c80:	02 c0       	rjmp	.+4      	; 0xc86 <__vector_18+0x86>
 {
-	UCSR0B &= ~(1 << RXCIE0);	// 수신완료 인터럽트 해제
+	UCSR0B &= ~(1 << RXCIE0);	//unset receive complete interrupt
 	chRxTemp0 = UDR0;
 	char tmpName[11];
 	uint8_t tmpData[4];
@@ -2228,32 +2228,32 @@ ISR(USART0_RX_vect)
      c82:	00 e0       	ldi	r16, 0x00	; 0
      c84:	10 e0       	ldi	r17, 0x00	; 0
 	{
-		case 'a':	// 저장된 데이터 모두 전송
+		case 'a':	//Send all stored data
 		for(int i=0; i<5; i++)
      c86:	05 30       	cpi	r16, 0x05	; 5
      c88:	11 05       	cpc	r17, r1
      c8a:	74 f3       	brlt	.-36     	; 0xc68 <__vector_18+0x68>
      c8c:	2c c0       	rjmp	.+88     	; 0xce6 <__vector_18+0xe6>
-		case '0':	// 저장된 데이터 삭제 후 데이터 모두 전송
+		case '0':	//Send all data after deleting saved data
 		case '1':
 		case '2':
 		case '3':
 		case '4':
-		eeprom_delete_data_index(chRxTemp0-48);	// 받은 데이터를 인덱스로 해서 삭제
+		eeprom_delete_data_index(chRxTemp0-48);	//Delete data by received index
      c8e:	90 e0       	ldi	r25, 0x00	; 0
      c90:	c0 97       	sbiw	r24, 0x30	; 48
      c92:	aa df       	rcall	.-172    	; 0xbe8 <eeprom_delete_data_index>
-		writeRfid(chRxTemp0-48);	// 변수 업데이트
+		writeRfid(chRxTemp0-48);	//local variable update
      c94:	80 91 ec 01 	lds	r24, 0x01EC	; 0x8001ec <chRxTemp0>
      c98:	90 e0       	ldi	r25, 0x00	; 0
      c9a:	c0 97       	sbiw	r24, 0x30	; 48
      c9c:	19 df       	rcall	.-462    	; 0xad0 <writeRfid>
-		for(int i=0; i<5; i++)	// 데이터 전송
+		for(int i=0; i<5; i++)	//transmit all data to phone
      c9e:	00 e0       	ldi	r16, 0x00	; 0
      ca0:	10 e0       	ldi	r17, 0x00	; 0
      ca2:	0c c0       	rjmp	.+24     	; 0xcbc <__vector_18+0xbc>
 		{
-			eeprom_read_data(i, tmpName, tmpData);	// 데이터 읽기
+			eeprom_read_data(i, tmpName, tmpData);	//read data from eeprom
      ca4:	ae 01       	movw	r20, r28
      ca6:	44 5f       	subi	r20, 0xF4	; 244
      ca8:	5f 4f       	sbci	r21, 0xFF	; 255
@@ -2261,27 +2261,27 @@ ISR(USART0_RX_vect)
      cac:	6f 5f       	subi	r22, 0xFF	; 255
      cae:	7f 4f       	sbci	r23, 0xFF	; 255
      cb0:	c8 01       	movw	r24, r16
-			sendRfidInfo(i);
+			sendRfidInfo(i);	//send
      cb2:	ca de       	rcall	.-620    	; 0xa48 <eeprom_read_data>
      cb4:	c8 01       	movw	r24, r16
      cb6:	1f de       	rcall	.-962    	; 0x8f6 <sendRfidInfo>
 		case '2':
 		case '3':
 		case '4':
-		eeprom_delete_data_index(chRxTemp0-48);	// 받은 데이터를 인덱스로 해서 삭제
-		writeRfid(chRxTemp0-48);	// 변수 업데이트
-		for(int i=0; i<5; i++)	// 데이터 전송
+		eeprom_delete_data_index(chRxTemp0-48);	//Delete data by received index
+		writeRfid(chRxTemp0-48);	//local variable update
+		for(int i=0; i<5; i++)	//transmit all data to phone
      cb8:	0f 5f       	subi	r16, 0xFF	; 255
      cba:	1f 4f       	sbci	r17, 0xFF	; 255
      cbc:	05 30       	cpi	r16, 0x05	; 5
      cbe:	11 05       	cpc	r17, r1
      cc0:	8c f3       	brlt	.-30     	; 0xca4 <__vector_18+0xa4>
      cc2:	11 c0       	rjmp	.+34     	; 0xce6 <__vector_18+0xe6>
-			eeprom_read_data(i, tmpName, tmpData);	// 데이터 읽기
-			sendRfidInfo(i);
+			eeprom_read_data(i, tmpName, tmpData);	//read data from eeprom
+			sendRfidInfo(i);	//send
 		}
 		break;
-		case 'x':
+		case 'x':	//lights on
 		PORT_SET(LIGHT1_PORT);
      cc4:	e5 e6       	ldi	r30, 0x65	; 101
      cc6:	f0 e0       	ldi	r31, 0x00	; 0
@@ -2310,7 +2310,7 @@ ISR(USART0_RX_vect)
 		default:
 		break;
 	}
-	UCSR0B |= (1 << RXCIE0);	// 수신완료 인터럽트 설정
+	UCSR0B |= (1 << RXCIE0);	//set receive complete interrupt
      ce6:	8a b1       	in	r24, 0x0a	; 10
      ce8:	80 68       	ori	r24, 0x80	; 128
      cea:	8a b9       	out	0x0a, r24	; 10
@@ -2387,50 +2387,50 @@ int main(void)
      d56:	80 81       	ld	r24, Z
 	_delay_ms(1000);
 	
-	PORT_DIR_IN(FIRE_PORT);	// 온도센서
+	PORT_DIR_IN(FIRE_PORT);	//fire detection sensor
      d58:	8e 7f       	andi	r24, 0xFE	; 254
      d5a:	80 83       	st	Z, r24
      d5c:	80 81       	ld	r24, Z
      d5e:	8d 7f       	andi	r24, 0xFD	; 253
      d60:	80 83       	st	Z, r24
-	PORT_DIR_IN(TILT_PORT);	// 기울기센서
+	PORT_DIR_IN(TILT_PORT);	//shock detection sensor
      d62:	84 b3       	in	r24, 0x14	; 20
      d64:	8b 7f       	andi	r24, 0xFB	; 251
      d66:	84 bb       	out	0x14, r24	; 20
 	
-	PORT_DIR_IN(PRESSURE_BUTTON_PORT);	// 문열림 확인 버튼
+	PORT_DIR_IN(PRESSURE_BUTTON_PORT);	//Door open confirmation button
      d68:	85 b3       	in	r24, 0x15	; 21
      d6a:	84 60       	ori	r24, 0x04	; 4
      d6c:	85 bb       	out	0x15, r24	; 21
-	PORT_SET(PRESSURE_BUTTON_PORT);	// 문열림 확인 버튼 풀업저항, high:열림, low:닫힘
+	PORT_SET(PRESSURE_BUTTON_PORT);	//pull-up resistor setting, high: open, low: close
      d6e:	84 b3       	in	r24, 0x14	; 20
      d70:	8d 7f       	andi	r24, 0xFD	; 253
      d72:	84 bb       	out	0x14, r24	; 20
 	
-	PORT_DIR_IN(OPEN_BUTTON_PORT);	// 문열림 버튼
+	PORT_DIR_IN(OPEN_BUTTON_PORT);	//door open button
      d74:	85 b3       	in	r24, 0x15	; 21
      d76:	82 60       	ori	r24, 0x02	; 2
      d78:	85 bb       	out	0x15, r24	; 21
-	PORT_SET(OPEN_BUTTON_PORT);	// 풀업저항 설정, high:안눌림, low:눌림
+	PORT_SET(OPEN_BUTTON_PORT);	//pull-up resistor setting, high: not pressed, low: pressed
      d7a:	84 b3       	in	r24, 0x14	; 20
      d7c:	81 60       	ori	r24, 0x01	; 1
      d7e:	84 bb       	out	0x14, r24	; 20
 	
-	PORT_DIR_OUT(OPEN_LED_PORT);	// 문열림 확인 led
+	PORT_DIR_OUT(OPEN_LED_PORT);	//door open check led
      d80:	84 b3       	in	r24, 0x14	; 20
      d82:	87 7f       	andi	r24, 0xF7	; 247
      d84:	84 bb       	out	0x14, r24	; 20
 	
-	PORT_DIR_IN(SENIOR_SWITCH_PORT);	// 노인용 도움 스위치
+	PORT_DIR_IN(SENIOR_SWITCH_PORT);	//help switch for the elderly
      d86:	85 b3       	in	r24, 0x15	; 21
      d88:	88 60       	ori	r24, 0x08	; 8
      d8a:	85 bb       	out	0x15, r24	; 21
-	PORT_SET(SENIOR_SWITCH_PORT);	// 풀업저항 설정
+	PORT_SET(SENIOR_SWITCH_PORT);	//Pull-up resistor setting
      d8c:	e4 e6       	ldi	r30, 0x64	; 100
      d8e:	f0 e0       	ldi	r31, 0x00	; 0
      d90:	80 81       	ld	r24, Z
 	
-	PORT_DIR_OUT(LIGHT1_PORT);	// 전구
+	PORT_DIR_OUT(LIGHT1_PORT);	//lights
      d92:	81 60       	ori	r24, 0x01	; 1
      d94:	80 83       	st	Z, r24
      d96:	80 81       	ld	r24, Z
@@ -2444,11 +2444,11 @@ int main(void)
      da2:	80 81       	ld	r24, Z
      da4:	87 7f       	andi	r24, 0xF7	; 247
      da6:	80 83       	st	Z, r24
-	PORT_DIR_IN(LIGHT_BUTTON_PORT);	// 전구 모두 끄기 버튼
+	PORT_DIR_IN(LIGHT_BUTTON_PORT);	//all light off button
      da8:	e5 e6       	ldi	r30, 0x65	; 101
      daa:	f0 e0       	ldi	r31, 0x00	; 0
      dac:	80 81       	ld	r24, Z
-	PORT_SET(LIGHT_BUTTON_PORT);	// 풀업저항
+	PORT_SET(LIGHT_BUTTON_PORT);	//Pull-up resistor setting
      dae:	88 60       	ori	r24, 0x08	; 8
      db0:	80 83       	st	Z, r24
      db2:	2f ef       	ldi	r18, 0xFF	; 255
@@ -2501,17 +2501,17 @@ int main(void)
 			PORT_CLR(LIGHT3_PORT);
      df8:	80 91 cc 01 	lds	r24, 0x01CC	; 0x8001cc <flag_isBuzzerRunning>
 		}
-		if(flag_isBuzzerRunning)	// 부저가 울리고 있을 때는 버튼입력 최우선
+		if(flag_isBuzzerRunning)	//When the buzzer is ringing, button input has the highest priority
      dfc:	88 23       	and	r24, r24
      dfe:	b1 f0       	breq	.+44     	; 0xe2c <main+0x106>
      e00:	99 99       	sbic	0x13, 1	; 19
      e02:	0d c0       	rjmp	.+26     	; 0xe1e <main+0xf8>
 		{
-			if(IS_PORT_CLR(OPEN_BUTTON_PORT))	// 버튼 눌리면
+			if(IS_PORT_CLR(OPEN_BUTTON_PORT))	//if Button pressd
      e04:	8a db       	rcall	.-2284   	; 0x51a <buzzerOff>
      e06:	81 e0       	ldi	r24, 0x01	; 1
 			{
-				buzzerOff();	// 부저 끄기
+				buzzerOff();	//buzzer off
      e08:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
 				flag_autoClose = true;
      e0c:	2f ef       	ldi	r18, 0xFF	; 255
@@ -2535,28 +2535,28 @@ int main(void)
 			}
 			_delay_ms(1);
 		}
-		else if(doorCheck())	//  문이 닫혀 있는 동안 실행
+		else if(doorCheck())	//run while the door is closed
      e2e:	88 23       	and	r24, r24
      e30:	09 f4       	brne	.+2      	; 0xe34 <main+0x10e>
      e32:	74 c0       	rjmp	.+232    	; 0xf1c <main+0x1f6>
      e34:	ce 01       	movw	r24, r28
 		{
-			readRfid(rfidData);	//rfid 읽기
+			readRfid(rfidData);	//read rfid
      e36:	01 96       	adiw	r24, 0x01	; 1
      e38:	ad dc       	rcall	.-1702   	; 0x794 <readRfid>
      e3a:	80 91 ca 01 	lds	r24, 0x01CA	; 0x8001ca <__data_end>
-			if(flag_isRFIDReceived)	//수신되었는지 확인
+			if(flag_isRFIDReceived)	//If rfid is tagged
      e3e:	88 23       	and	r24, r24
      e40:	d9 f0       	breq	.+54     	; 0xe78 <main+0x152>
      e42:	ce 01       	movw	r24, r28
 			{
-				int tmpInt = checkRfid(rfidData);
+				int tmpInt = checkRfid(rfidData);	//Check if the value is currently saved in data
      e44:	01 96       	adiw	r24, 0x01	; 1
      e46:	31 dd       	rcall	.-1438   	; 0x8aa <checkRfid>
      e48:	8c 01       	movw	r16, r24
      e4a:	05 97       	sbiw	r24, 0x05	; 5
      e4c:	84 f4       	brge	.+32     	; 0xe6e <main+0x148>
-				if(tmpInt < 5)	//현재 저장되어있는 값인지 확인
+				if(tmpInt < 5)	//if in data
      e4e:	8d eb       	ldi	r24, 0xBD	; 189
 				{
 					USART0_Tx_String("Welcome,");
@@ -2581,28 +2581,28 @@ int main(void)
      e6e:	ce 01       	movw	r24, r28
      e70:	01 96       	adiw	r24, 0x01	; 1
 				}
-				else //저장 시도
+				else //if not in data store value
 				{
 					storeRfid(rfidData);
      e72:	71 de       	rcall	.-798    	; 0xb56 <storeRfid>
      e74:	10 92 ca 01 	sts	0x01CA, r1	; 0x8001ca <__data_end>
      e78:	85 b3       	in	r24, 0x15	; 21
 				}
-				flag_isRFIDReceived = false;
+				flag_isRFIDReceived = false;	//receive flag reset
      e7a:	81 60       	ori	r24, 0x01	; 1
      e7c:	85 bb       	out	0x15, r24	; 21
 			}
-			PORT_SET(OPEN_LED_PORT);	// led on
+			PORT_SET(OPEN_LED_PORT);	//led on
      e7e:	80 91 00 01 	lds	r24, 0x0100	; 0x800100 <__DATA_REGION_ORIGIN__>
      e82:	81 11       	cpse	r24, r1
-			if(!flag_autoClose && flag_isButtonPressed)	// 자동 잠금 해제 상태일 때(버튼 누르고 문을 열었다가 닫았을 때)
+			if(!flag_autoClose && flag_isButtonPressed)	//When in automatic unlocking state (when the door is opened and closed by pressing a button)
      e84:	10 c0       	rjmp	.+32     	; 0xea6 <main+0x180>
      e86:	80 91 cb 01 	lds	r24, 0x01CB	; 0x8001cb <flag_isButtonPressed>
      e8a:	88 23       	and	r24, r24
      e8c:	61 f0       	breq	.+24     	; 0xea6 <main+0x180>
      e8e:	10 92 cb 01 	sts	0x01CB, r1	; 0x8001cb <flag_isButtonPressed>
 			{
-				flag_isButtonPressed = false;	// 버튼 눌림 플래그 초기화
+				flag_isButtonPressed = false;	//Reset button pressed flag
      e92:	9f ef       	ldi	r25, 0xFF	; 255
      e94:	29 e6       	ldi	r18, 0x69	; 105
      e96:	88 e1       	ldi	r24, 0x18	; 24
@@ -2613,18 +2613,18 @@ int main(void)
      ea0:	00 c0       	rjmp	.+0      	; 0xea2 <main+0x17c>
      ea2:	00 00       	nop
      ea4:	88 db       	rcall	.-2288   	; 0x5b6 <closeDoor>
-				_delay_ms(500);	// 잠시 기다렸다가
-				closeDoor();	// 문닫기
+				_delay_ms(500);	//wait a while
+				closeDoor();	//close the door
      ea6:	99 99       	sbic	0x13, 1	; 19
      ea8:	0f c0       	rjmp	.+30     	; 0xec8 <main+0x1a2>
 			}
-			if(IS_PORT_CLR(OPEN_BUTTON_PORT))	// 문이 닫혀있는데 open 버튼이 눌렸으면
+			if(IS_PORT_CLR(OPEN_BUTTON_PORT))	//If the door is closed and the open button is pressed
      eaa:	6a db       	rcall	.-2348   	; 0x580 <openDoor>
 			{
-				openDoor();	// 문열기
+				openDoor();	//open the door
      eac:	81 e0       	ldi	r24, 0x01	; 1
      eae:	80 93 cb 01 	sts	0x01CB, r24	; 0x8001cb <flag_isButtonPressed>
-				flag_isButtonPressed = true;	// 버튼 눌림 플래그 set
+				flag_isButtonPressed = true;	//button pressed flag set
      eb2:	80 93 00 01 	sts	0x0100, r24	; 0x800100 <__DATA_REGION_ORIGIN__>
 				flag_autoClose = true;
      eb6:	9f ef       	ldi	r25, 0xFF	; 255
@@ -2640,7 +2640,7 @@ int main(void)
      eca:	90 e0       	ldi	r25, 0x00	; 0
 				_delay_ms(200);
 			}
-			if(readADC(TILT) < TILT_THRESHOLD)	// 충격 발생
+			if(readADC(TILT) < TILT_THRESHOLD)	//is shocked
      ecc:	f0 da       	rcall	.-2592   	; 0x4ae <readADC>
      ece:	8c 3b       	cpi	r24, 0xBC	; 188
      ed0:	92 40       	sbci	r25, 0x02	; 2
@@ -2655,20 +2655,20 @@ int main(void)
 				if(shockCount > 2){
      ee6:	80 91 e6 01 	lds	r24, 0x01E6	; 0x8001e6 <shockCount>
      eea:	90 91 e7 01 	lds	r25, 0x01E7	; 0x8001e7 <shockCount+0x1>
-					USART0_Tx_String("112");	// 블루투스 112 전송
+					USART0_Tx_String("112");	//Send 112 to phone
      eee:	03 97       	sbiw	r24, 0x03	; 3
      ef0:	40 f0       	brcs	.+16     	; 0xf02 <main+0x1dc>
      ef2:	8d e0       	ldi	r24, 0x0D	; 13
      ef4:	91 e0       	ldi	r25, 0x01	; 1
-					urgentButton();	// 1byte 데이터 수신 대기
+					urgentButton();	//Waiting for 1 byte data reception
      ef6:	9f da       	rcall	.-2754   	; 0x436 <USART0_Tx_String>
      ef8:	15 db       	rcall	.-2518   	; 0x524 <urgentButton>
-					shockCount = 0;	// 충격 카운트 초기화
+					shockCount = 0;	//Reset Shock Count
      efa:	10 92 e7 01 	sts	0x01E7, r1	; 0x8001e7 <shockCount+0x1>
      efe:	10 92 e6 01 	sts	0x01E6, r1	; 0x8001e6 <shockCount>
 				}
 			}
-			if(readADC(FIRE) > FIRE_THRESHOLD)	// 화재 발생
+			if(readADC(FIRE) > FIRE_THRESHOLD)	//is fire
      f02:	80 e0       	ldi	r24, 0x00	; 0
      f04:	90 e0       	ldi	r25, 0x00	; 0
      f06:	d3 da       	rcall	.-2650   	; 0x4ae <readADC>
@@ -2678,15 +2678,15 @@ int main(void)
      f0e:	65 cf       	rjmp	.-310    	; 0xdda <main+0xb4>
      f10:	86 ec       	ldi	r24, 0xC6	; 198
 			{
-				USART0_Tx_String("119");	// 블루투스 119 전송
+				USART0_Tx_String("119");	//Send 119 to phone
      f12:	91 e0       	ldi	r25, 0x01	; 1
      f14:	90 da       	rcall	.-2784   	; 0x436 <USART0_Tx_String>
      f16:	34 db       	rcall	.-2456   	; 0x580 <openDoor>
      f18:	05 db       	rcall	.-2550   	; 0x524 <urgentButton>
-				openDoor();	// 문열기
+				openDoor();	//open the door
      f1a:	5f cf       	rjmp	.-322    	; 0xdda <main+0xb4>
      f1c:	85 b3       	in	r24, 0x15	; 21
-				urgentButton();	// 1byte 데이터 수신 대기
+				urgentButton();	//Waiting for 1 byte data reception
      f1e:	8e 7f       	andi	r24, 0xFE	; 254
      f20:	85 bb       	out	0x15, r24	; 21
      f22:	5b cf       	rjmp	.-330    	; 0xdda <main+0xb4>
@@ -2694,7 +2694,7 @@ int main(void)
 00000f24 <sprintf>:
 			}
 		}
-		else // 문이 열려 있는 동안 실행
+		else //run while the door is open
 		{
 			PORT_CLR(OPEN_LED_PORT);	// led off
      f24:	0f 93       	push	r16

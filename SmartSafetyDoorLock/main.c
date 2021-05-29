@@ -14,8 +14,8 @@
 #include <putil.h>
 #include <mfrc522.h>
 #include <spi.h>
-#define DEBUGMODE 0	// 0:normal, 1:debug
-#define INITIAL_VALUE 0	// 0: none, 1:store null data, 2:set initial values(rfid)
+#define DEBUGMODE 0	//0:normal, 1:debug
+#define INITIAL_VALUE 0	//0: none, 1:store null data, 2:set initial values(rfid)
 /////////////////////////////////////////////////////////////////////////////////////
 // adc threshold
 #define FIRE_THRESHOLD 250	//normal 192, active 500
@@ -24,42 +24,40 @@
 /////////////////////////////////////////////////////////////////////////////////////
 // set ports
 #define OPEN_LED_PORT PORT(C, 0)	//door open display led
-#define OPEN_BUTTON_PORT PORT(C, 1)	// door open button
-#define PRESSURE_BUTTON_PORT PORT(C, 2)	// door open confirm button
-#define SENIOR_SWITCH_PORT PORT(C, 3)	// for the elderly help switch
+#define OPEN_BUTTON_PORT PORT(C, 1)	//door open button
+#define PRESSURE_BUTTON_PORT PORT(C, 2)	//door open confirm button
+#define SENIOR_SWITCH_PORT PORT(C, 3)	//for the elderly help switch
 
-#define LIGHT1_PORT PORT(G, 0)	// lights
+#define LIGHT1_PORT PORT(G, 0)	//lights
 #define LIGHT2_PORT PORT(G, 1)
 #define LIGHT3_PORT PORT(G, 2)
-#define LIGHT_BUTTON_PORT PORT(G, 3)	// lights all off button
+#define LIGHT_BUTTON_PORT PORT(G, 3)	//lights all off button
 
-#define BUZZER_PORT PORT(B, 4)	// buzzer timer0 OC0
-#define SERVO_PORT PORT(B, 5)	// servo motor timer1 OC1A
-// timer2 : 다용도 시간 측정용
+#define BUZZER_PORT PORT(B, 4)	//buzzer timer0 OC0
+#define SERVO_PORT PORT(B, 5)	//servo motor timer1 OC1A
+// timer2 : For 1 ms measurement
 
-#define FIRE_PORT PORT(F, 0)	// fire detection sensor adc1
-#define TILT_PORT PORT(F, 1)	// tilt sensor adc2
+#define FIRE_PORT PORT(F, 0)	//fire detection sensor adc1
+#define TILT_PORT PORT(F, 1)	//tilt sensor adc2
 #define FIRE 0
 #define TILT 1
 
 // usart0 (Rx:PE0, Tx:PE1) : Bluetooth
 // spi : RFID
 
-#define AUTO_CLOSE_TIME 5000	// doorlock 몇초동안 열려있을 시 경고메세지 보내는가에 대한 시간
-#define DOOR_OPEN_TIME 3000	// 버튼 눌렀을 때 열려있을 시간
-#define SHOCK_COUNT_TIME 5000	// shock count 초기화 시간
-#define BUTTON_RFIDMODE_TIME 5000	//rfid읽기모드 진입 시간
-#define SENIOR_HELP_TIME 5000	// 문이 열리지 않는 기간 카운트
+#define AUTO_CLOSE_TIME 5000	//how long the door is closed until send a notification
+#define DOOR_OPEN_TIME 3000	//open time when press the button
+#define SHOCK_COUNT_TIME 5000	//shock count reset time
+#define SENIOR_HELP_TIME 5000	//how long the door is closed until send a notification(for senior)
 /////////////////////////////////////////////////////////////////////////////////////
 // variables
-unsigned char chRxTemp0;	// usart0 store buffer
+unsigned char chRxTemp0;	//usart0 store buffer
 
-volatile uint16_t shockCount = 0;	// 충격 감지 카운트
-volatile uint16_t tmpShockCount = 0;	// 충격 감지 카운트 비교용
+volatile uint16_t shockCount = 0;	//shock count
+volatile uint16_t tmpShockCount = 0;	//shock count for comparison
 
-uint8_t currentRfidData[4];	//현재 입력된 rfid값
-uint8_t lastRfidData[4];	//중복출력 방지용 이전 rfid값
-volatile uint16_t rfidFindCount = 0;	//중복출력 방지용 rfid 수신 카운트
+uint8_t currentRfidData[4];	//Current input rfid value
+uint8_t lastRfidData[4];	//Previous rfid value to prevent duplicate output
 
 // for timer2 count
 volatile unsigned int autoCloseWaitTime = 0;
@@ -70,23 +68,23 @@ volatile unsigned int buttonRfidTime = 0;
 
 struct RFID_info
 {
-	int RFID_index;	//인덱스(0~4)
-	char RFID_name[11];	//사용자 이름 최대 10자 : 10바이트
-	uint8_t RFID_value[4];	//태그값 4바이트
+	int RFID_index;	//index(0~4)
+	char RFID_name[11];	//user name max 10 : 10byte
+	uint8_t RFID_value[4];	//tag value 4byte
 };
-struct RFID_info RFID_data[5];	//5개까지 저장
+struct RFID_info RFID_data[5];	//store up to 5
 char emptyName[11] = {0,0,0,0,0,0,0,0,0,0};
 uint8_t emptyData[4] = {0,0,0,0};
 uint8_t data1[4] = {0xc9, 0x19, 0x29, 0x8c};
 uint8_t data2[4] = {0x4c, 0x95, 0x52, 0x18};
 /////////////////////////////////////////////////////////////////////////////////////
 // flags
-bool flag_autoClose = true;	// 자동 잠김 플래그
-bool flag_isBuzzerRunning = false;	// 부저 실행여부 플래그
-bool flag_isButtonPressed = false;	// open button 눌림 플래그
-bool flag_isRFIDReceived = false;	// RFID 수신 플래그
+bool flag_autoClose = true;	//auto close flag
+bool flag_isBuzzerRunning = false;	//buzzer on/off flag
+bool flag_isButtonPressed = false;	//open button flag
+bool flag_isRFIDReceived = false;	//RFID receive flag
 /////////////////////////////////////////////////////////////////////////////////////
-// 함수 선언
+//Function declaration
 void urgentButton();
 void checkADC(char* string, int num);
 void init_Buzzer();
@@ -112,56 +110,56 @@ bool eeprom_delete_data_index(int index);
 /////////////////////////////////////////////////////////////////////////////////////
 // USART
 //
-void urgentButton()	//112, 119, no 버튼
+void urgentButton()	//112, 119, no button
 {
-	UCSR0B &= ~(1 << RXCIE0);	// 수신완료 인터럽트 해제
+	UCSR0B &= ~(1 << RXCIE0);	//unset receiving completion interrupt
 	char tmpChar = USART0_Rx();
 	switch (tmpChar)
 	{
-		case '1':	// 112 버튼 입력
-		case '2':	// 119 버튼 입력
-		flag_autoClose = false;	// 문 저절로 안잠기게
+		case '1':	//112 button received
+		case '2':	//119 button received
+		flag_autoClose = false;	//the door won't close by itself
 		buzzerOn();
 		break;
-		case '3':	// No 버튼 입력
+		case '3':	//no button received
 		flag_autoClose = true;
 		buzzerOff();
 		break;
-		default:	// 예외처리
+		default:
 		break;
 	}
-	UCSR0B |= (1 << RXCIE0);	// 수신완료 인터럽트 설정
+	UCSR0B |= (1 << RXCIE0);	//set receive complete interrupt
 }
 
 ISR(USART0_RX_vect)
 {
-	UCSR0B &= ~(1 << RXCIE0);	// 수신완료 인터럽트 해제
+	UCSR0B &= ~(1 << RXCIE0);	//unset receive complete interrupt
 	chRxTemp0 = UDR0;
 	char tmpName[11];
 	uint8_t tmpData[4];
 	switch(chRxTemp0)
 	{
-		case 'a':	// 저장된 데이터 모두 전송
+		case 'a':	//Send all stored data
 		for(int i=0; i<5; i++)
 		{
-			eeprom_read_data(i, tmpName, tmpData);	// 데이터 읽기
-			sendRfidInfo(i);
+			eeprom_read_data(i, tmpName, tmpData);	//read data from eeprom
+			sendRfidInfo(i);	//send
 		}
 		break;
-		case '0':	// 저장된 데이터 삭제 후 데이터 모두 전송
+		case '0':	//Send all data after deleting saved data
 		case '1':
 		case '2':
 		case '3':
 		case '4':
-		eeprom_delete_data_index(chRxTemp0-48);	// 받은 데이터를 인덱스로 해서 삭제
-		writeRfid(chRxTemp0-48);	// 변수 업데이트
-		for(int i=0; i<5; i++)	// 데이터 전송
+		eeprom_delete_data_index(chRxTemp0-48);	//Delete data by received index
+		writeRfid(chRxTemp0-48);	//local variable update
+		for(int i=0; i<5; i++)	//transmit all data to phone
 		{
-			eeprom_read_data(i, tmpName, tmpData);	// 데이터 읽기
-			sendRfidInfo(i);
+			eeprom_read_data(i, tmpName, tmpData);	//read data from eeprom
+			sendRfidInfo(i);	//send
 		}
 		break;
-		case 'x':
+		case 'x':	//lights on
 		PORT_SET(LIGHT1_PORT);
 		break;
 		case 'y':
@@ -173,11 +171,11 @@ ISR(USART0_RX_vect)
 		default:
 		break;
 	}
-	UCSR0B |= (1 << RXCIE0);	// 수신완료 인터럽트 설정
+	UCSR0B |= (1 << RXCIE0);	//set receive complete interrupt
 }
 /////////////////////////////////////////////////////////////////////////////////////
 // ADC
-void checkADC(char* string, int num)	// 디버깅용 adc값 출력 함수
+void checkADC(char* string, int num)	//print ADC value for debugging
 {
 	char str[5] = "";
 	char tmp[50] = "";
@@ -197,19 +195,19 @@ void init_Buzzer()
 }
 void buzzerOn()
 {
-	TCCR0 = 0b01101101;	// buzzer 켜기
+	TCCR0 = 0b01101101;	// buzzer on
 	flag_isBuzzerRunning = true;
 }
 void buzzerOff()
 {
-	TCCR0 = 0b01011101;	// buzzer 끄기
+	TCCR0 = 0b01011101;	// buzzer off
 	flag_isBuzzerRunning = false;
 }
 /////////////////////////////////////////////////////////////////////////////////////
 // Door
-bool doorCheck()	// 문이 열려있는지 check. 닫혀있으면 true, 열려있으면 false
+bool doorCheck()	//Check if the door is open. true if closed, false if open
 {
-	if(IS_PORT_SET(PRESSURE_BUTTON_PORT))	// 문이 열려 있음
+	if(IS_PORT_SET(PRESSURE_BUTTON_PORT))	//door is open
 	{
 		return false;
 	}
@@ -218,101 +216,102 @@ bool doorCheck()	// 문이 열려있는지 check. 닫혀있으면 true, 열려�
 		return true;
 	}
 }
-void init_Servo()	 //서보 모터 초기화
+void init_Servo()	 //Servo motor initialization
 {
 	PORT_DIR_OUT(SERVO_PORT);
 	TCCR1A |= (1<<WGM11);
-	TCCR1B |= (1<<WGM12) | (1<<WGM13); //고속 PWM 모드, TOP : ICR1
-	//TCCR1B |= (1<<CS11); //분주율 8, 2MHz
-	ICR1 = 40000; //20ms주기
-	TCCR1A |= (1<<COM1A1); //비반전 모드
+	TCCR1B |= (1<<WGM12) | (1<<WGM13); //fast PWM, TOP: ICR1
+	//TCCR1B |= (1<<CS11); //Prescaler 8, 2MHz
+	ICR1 = 40000; //20msCycle
+	TCCR1A |= (1<<COM1A1); //non-inverting mode
 }
 void openDoor()	//door lock unlocked
 {
-	TCCR1B |= (1<<CS11); //켜기
+	TCCR1B |= (1<<CS11); //motor on
 	OCR1A = 2000;
-	flag_autoClose = true;	// 자동 닫힘 설정
-	autoCloseWaitTime = 0;	// 문 열림 시간 측정 타이머 초기화
+	flag_autoClose = true;	//set auto close
+	autoCloseWaitTime = 0;	//Reset timer : measure door open time
 	_delay_ms(300);
-	TCCR1B &= ~(1<<CS11); //끄기
+	TCCR1B &= ~(1<<CS11); //motor off
 }
 void closeDoor()	//door lock locked
 {
-	TCCR1B |= (1<<CS11); //켜기
+	TCCR1B |= (1<<CS11); //motor on
 	OCR1A = 4300;
-	flag_autoClose = false;	// 자동 닫힘 해제
+	flag_autoClose = false;	//unset auto close
 	_delay_ms(300);
-	TCCR1B &= ~(1<<CS11); //끄기
+	TCCR1B &= ~(1<<CS11); //motor off
 }
 /////////////////////////////////////////////////////////////////////////////////
 // Timer2
-ISR(TIMER2_OVF_vect)	//16ms마다 한번 실행
+ISR(TIMER2_OVF_vect)	//Run once every 16ms
 {
 	TCNT2 = 6;
-	if(doorCheck())	// 문이 닫혀있을 때
+	if(doorCheck())	//when the door is closed
 	{
-		lockedTime = 0;	// 문열림 측정 시간 초기화
-		/// 문 자동으로 잠그기
-		if(flag_autoClose)	// 자동잠금 활성화 상태일 때
+		lockedTime = 0;	//Reset door open measurement time
+		///lock the door automatically
+		if(flag_autoClose)	//When auto-lock is enabled
 		{
-			autoCloseWaitTime++;	// 기다리기
-			if(autoCloseWaitTime >= DOOR_OPEN_TIME)	// 일정 시간 지나면 문 닫기
+			autoCloseWaitTime++;	//waiting
+			if(autoCloseWaitTime >= DOOR_OPEN_TIME)	//Close the door after few seconds
 			{
 				closeDoor();
 			}
 		}
-		else // 자동잠금 비활성화 상태일 때(문이 폰으로 열렸을 때)
+		else //When auto close is disabled (when the door is opened with a phone)
 		{
-			// 자동으로 잠그지도 않고 폰으로 메시지 보내지도 않음
+			//It doesn't lock automatically and doesn't send messages to your phone
 		}
-		if(IS_PORT_CLR(SENIOR_SWITCH_PORT))	// 노인용 스위치가 눌려있을 때
+		if(IS_PORT_CLR(SENIOR_SWITCH_PORT))	//When the switch for the elderly is pressed
 		{
 			seniorHelpTime++;
-			if(seniorHelpTime >= SENIOR_HELP_TIME)	// 일정 시간동안 문이 열리지 않으면
+			if(seniorHelpTime >= SENIOR_HELP_TIME)	//If the door is not opened for a certain period of time
 			{
-				USART0_Tx_String("Call112");	// 바로 112에 연락
-				buzzerOn();
-				openDoor();	// 문열기
-				flag_autoClose = false;	// 자동잠금 해제
+				USART0_Tx_String("Call112");	//Call 112
+				buzzerOn();	//buzzer on
+				openDoor();	//open door
+				flag_autoClose = false;	//unset auto close
 				seniorHelpTime = 0;
 			}
 		}
-		// 테스트에서는 5초마다 알림이 가지만 실제 상황은 카운트 시간이 몇일 단위이므로 알림이 계속 뜨지 않음
+		//In the test, the notification fires every 5 seconds, 
+		//but in the real situation, the count time is several days, so the notification doesn't pop up rapidly
 		else
 		{
 			seniorHelpTime = 0;
 		}
 	}
-	else // 문이 열려있을 때
+	else //when the door is opend
 	{
-		autoCloseWaitTime = 0;	// 잠금 시간 초기화
+		autoCloseWaitTime = 0;	//Reset auto close time
 		seniorHelpTime = 0;
-		/// 문 계속 열려있으면 폰으로 알림 보내기
-		if(flag_autoClose)	// 자동잠금 활성화 상태일 때(일반적으로 문을 연 상황)
+		///Send a notification to the phone if the door is still open
+		if(flag_autoClose)	//When auto close is activated (normally when the door is opened)
 		{
 			lockedTime++;
-			if(lockedTime >= AUTO_CLOSE_TIME)	// 일정 시간 지나면
+			if(lockedTime >= AUTO_CLOSE_TIME)	//after few seconds
 			{
-				USART0_Tx_String("Please check the door");	// 메시지 전송
-				lockedTime = 0;	// 제한시간 초기화
+				USART0_Tx_String("Please check the door");	//send message
+				lockedTime = 0;	//reset locked time
 			}
 		}
-		else // 자동잠금 비활성화 상태일 때(문이 폰으로 열렸을 때)
+		else //When auto close is disabled (when the door is opened with a phone)
 		{
-			// 자동으로 잠그지도 않고 폰으로 메시지 보내지도 않음
+			//It doesn't lock automatically and doesn't send messages to your phone
 		}
 	}
 	
-	// 충격 카운트 시간 초기화
-	if(shockCount != tmpShockCount)	// shock count가 전과 다를 때
+	//Reset Shock Count Time
+	if(shockCount != tmpShockCount)	//When the shock count is different from before
 	{
-		shockCountTime = 0;	// 처음부터 다시 카운트 시작
-		tmpShockCount = shockCount;	// 현재 shock count 저장
+		shockCountTime = 0;	//start counting again from the beginning
+		tmpShockCount = shockCount;	//Save current shock count
 	}
-	if(shockCount)	// shock count가 0이 아닐 때
+	if(shockCount)	//When shock count is not 0
 	{
 		shockCountTime++;
-		if(shockCountTime >= SHOCK_COUNT_TIME)	// 일정 시간 지나면 shock count 초기화
+		if(shockCountTime >= SHOCK_COUNT_TIME)	//After few seconds, reset shock count
 		{
 			shockCount = 0;
 			tmpShockCount = 0;
@@ -322,30 +321,9 @@ ISR(TIMER2_OVF_vect)	//16ms마다 한번 실행
 /////////////////////////////////////////////////////////////////////////////////
 // RFID
 
-// 블루투스 연결되면 atmega에 있는 데이터 폰으로 전송 (init_RFID에서)
-// 항상 rfid 읽기
-// atmega에서 데이터 저장 : 폰으로 name string 요청 -> atmega에서 name 받아 저장 -> 폰으로 모든 데이터 다시 전송
-// 폰에서 삭제 누르면 요청 보냄
-
-
-//폰                     atmega
-// (폰에 데이터 저장)
-// 데이터 요청
-//						요청 수신(인터럽트)
-//						데이터 송신
-// 수신 후 저장
-/////////////////////////////////////////////////////////////////////////////////
-// (저장된 데이터 삭제)
-// 데이터 삭제 요청
-//                      요청 수신(인터럽트)
-//                      데이터 삭제
-//                      (폰에 데이터 저장)실행
-//
-
-
 void init_RFID()
 {
-	//초기값 지정
+	//initial value for debugging
 	#if INITIAL_VALUE == 1
 	eeprom_update_data(0, "PJB1", data1);
 	eeprom_update_data(1, "PJB2", data2);
@@ -360,13 +338,13 @@ void init_RFID()
 	eeprom_update_data(4, emptyName, emptyData);
 	#endif
 	
-	for(int i=0; i<5; i++)	//eeprom값을 변수에 저장
+	for(int i=0; i<5; i++)	//Save the eeprom value to local variable
 	{
 		writeRfid(i);
 	}
 }
 
-void byteToString(uint8_t data[4], char str[50])	//rfid 데이터를 string으로 변환
+void byteToString(uint8_t data[4], char str[50])	//Convert rfid data to string
 {
 	sprintf(str, "%x%x:%x%x:%x%x:%x%x"
 	, data[0]/16, data[0]%16
@@ -374,7 +352,7 @@ void byteToString(uint8_t data[4], char str[50])	//rfid 데이터를 string으�
 	, data[2]/16, data[2]%16
 	, data[3]/16, data[3]%16);
 }
-bool arrayEqual(uint8_t a[], uint8_t b[], uint8_t size)	//배열 같은지 확인하는 함수
+bool arrayEqual(uint8_t a[], uint8_t b[], uint8_t size)	//check if an array is equal
 {
 	for (int i=0; i<size; i++)
 	{
@@ -383,7 +361,7 @@ bool arrayEqual(uint8_t a[], uint8_t b[], uint8_t size)	//배열 같은지 확�
 	}
 	return true;
 }
-void readRfid(uint8_t data[4])	//RFID값 읽기
+void readRfid(uint8_t data[4])	//read RFID
 {
 	uint8_t byte;
 	uint8_t str[16];
@@ -392,82 +370,82 @@ void readRfid(uint8_t data[4])	//RFID값 읽기
 
 	if(byte == CARD_FOUND)
 	{
-		memcpy(currentRfidData, str, 4);	//현재 데이터에 저장
-		if(arrayEqual(lastRfidData, currentRfidData, 4))	//전의 데이터와 같으면(계속 대고 있으면)
+		memcpy(currentRfidData, str, 4);	//save to current data
+		if(arrayEqual(lastRfidData, currentRfidData, 4))	//If it is the same as the previous data (if you keep holding it)
 		{
-			flag_isRFIDReceived = false;
+			flag_isRFIDReceived = false;	//it doesn't receive again
 		}
 		else
 		{
-			memcpy(data, str, 4);	//반환값에 저장
-			flag_isRFIDReceived = true;
+			memcpy(data, str, 4);	//store in return value
+			flag_isRFIDReceived = true;	//it received
 		}
-		memcpy(lastRfidData, currentRfidData, 4);	//이전값으로 옮기기
+		memcpy(lastRfidData, currentRfidData, 4);	//move to previous value
 		
-		byte = mfrc522_request(PICC_REQALL, str);	// 쓰레기값 처리
+		byte = mfrc522_request(PICC_REQALL, str);	//garbage value disposal
 		byte = mfrc522_get_card_serial(str);
 	}
 	else
 	{
-		for(int i=0; i<4; i++)	//카드가 없으면 이전값 초기화
+		for(int i=0; i<4; i++)	//If there is no card, the previous value is reset.
 		{
 			lastRfidData[i] = 0;
 		}
 		flag_isRFIDReceived = false;
 	}
 }
-void storeRfid(uint8_t data[4])	//RFID값 읽어서 저장
+void storeRfid(uint8_t data[4])	//Read and save RFID value
 {
 	int index = searchEmptyMemory();
-	if(index < 5)	//5개까지 저장 가능
+	if(index < 5)	//Can store up to 5
 	{
-		USART0_Tx_String("Please enter the name\n");	//이름 입력받음
+		USART0_Tx_String("Please enter the name\n");	//name request
 		char tmpName[11];
 		
-		USART0_Rx_String(tmpName, 11);	//10자리 받기(null까지 11자리)
-		eeprom_update_data(index, tmpName, data);	//정보 저장
-		writeRfid(index);	// 변수에도 저장
-		for(int i=0; i<5; i++)	// 폰으로 바뀐 데이터 포함 모두 전송
+		USART0_Rx_String(tmpName, 11);	//Get 10 digits (11 digits include null)
+		eeprom_update_data(index, tmpName, data);	//store data in the eeprom
+		writeRfid(index);	//also store in local variable
+		for(int i=0; i<5; i++)	//Send all data including data changed to the phone
 		{
 			sendRfidInfo(i);
 		}
 		_delay_ms(200);
 		USART0_Tx_String("\nregistration completed");
 	}
-	else
+	else //already 5 data stored, error
 	{
 		USART0_Tx_String("You can no longer register.\n");
 	}
 }
-int searchEmptyMemory()	// 빈 공간 찾기
+int searchEmptyMemory()	//find empty space
 {
 	for(int i=0; i<5; i++)
 	{
-		if (arrayEqual(RFID_data[i].RFID_value, emptyData, 4))	//메모리가 비어있으면
+		if (arrayEqual(RFID_data[i].RFID_value, emptyData, 4))	//If there is free space in memory
 		{
-			return i;
+			return i;	//return index
 		}
 	}
-	return 5;	//비어있지 않으면 5 반환
+	return 5;	//Return 5 if not empty
 }
-void writeRfid(int index)	// eeprom값을 내부 변수에 저장
+void writeRfid(int index)	//Save the eeprom value to local variable
 {
 	RFID_data[index].RFID_index = index;
 	eeprom_read_data(index, RFID_data[index].RFID_name, RFID_data[index].RFID_value);
 }
-int checkRfid(uint8_t data[4])	// 저장값에 있는지 확인
+int checkRfid(uint8_t data[4])	//check if it's in the data
 {
-	for(int i=0; i<5; i++)	//입력값과 같은 기존 저장값이 있을 때
+	for(int i=0; i<5; i++)	//if exist,
 	{
-		if (arrayEqual(RFID_data[i].RFID_value, data, 4))
+		if (arrayEqual(RFID_data[i].RFID_value, data, 4))	//return index after checking for empty space
 		{
 			return i;
 		}
 	}
-	USART0_Tx_String("There are no matching cards.\n");
+	USART0_Tx_String("There are no matching cards.\n");	//else, return error
 	return 5;
 }
-void sendRfidInfo(int index)	//저장된 rfid값 출력하기
+void sendRfidInfo(int index)	//Print the rfid value in local variable
 {
 	char tmpStr[100];
 	sprintf(tmpStr, "%d,%s,%x%x%x%x%x%x%x%x,"
@@ -478,7 +456,7 @@ void sendRfidInfo(int index)	//저장된 rfid값 출력하기
 	, RFID_data[index].RFID_value[3]/16, RFID_data[index].RFID_value[3]%16);
 	USART0_Tx_String(tmpStr);
 }
-void deleteRfid(int index)	//RFID 저장값 삭제
+void deleteRfid(int index)	//Delete rfid data in local variable
 {
 	RFID_data[index].RFID_index = 0;
 	memset(RFID_data[index].RFID_name, 0, sizeof(RFID_data[index].RFID_name));
@@ -486,39 +464,39 @@ void deleteRfid(int index)	//RFID 저장값 삭제
 }
 //[0].. [9][10] [11][12][13][14] [15]..
 //name1....'\0' data............ name2...
-void eeprom_update_data(int index, char name[11], uint8_t data[4])	// 값 받아 데이터 저장
+void eeprom_update_data(int index, char name[11], uint8_t data[4])	//store data in eeprom
 {
-	for(int i=0; i<11; i++)	// name 저장
+	for(int i=0; i<11; i++)	//store name
 	{
-		if(name[i] == 0)	// null문자가 아닐때까지 저장
+		if(name[i] == 0)	//until is not null
 		{
 			eeprom_update_byte(index*15 + i, 0);
 			break;
 		}
 		eeprom_update_byte(index*15 + i, name[i]);
 	}
-	for(int i=0; i<4; i++)	// data 저장
+	for(int i=0; i<4; i++)	//store data
 	{
 		eeprom_update_byte(index*15 + 11 + i, data[i]);
 	}
 }
-void eeprom_read_data(int index, char name[11], uint8_t data[4])	// index로 데이터 읽기
+void eeprom_read_data(int index, char name[11], uint8_t data[4])	//read data by index
 {
-	for(int i=0; i<11; i++)	// name 읽기
+	for(int i=0; i<11; i++)	//read name
 	{
-		if(eeprom_read_byte(index*15 + i) == 0)	// null이면 읽기 종료
+		if(eeprom_read_byte(index*15 + i) == 0)	//if null, end
 		{
 			name[i] = 0;
 			break;
 		}
 		name[i] = eeprom_read_byte(index*15 + i);
 	}
-	for(int i=0; i<4; i++)	// data 읽기
+	for(int i=0; i<4; i++)	//read data
 	{
 		data[i] = eeprom_read_byte(index*15 + 11 + i);
 	}
 }
-bool eeprom_delete_data_index(int index)	// index로 데이터 지우기
+bool eeprom_delete_data_index(int index)	//delete data by index
 {
 	if(index < 5)
 	{
@@ -561,25 +539,25 @@ int main(void)
 	init_USART0();
 	_delay_ms(1000);
 	
-	PORT_DIR_IN(FIRE_PORT);	// 온도센서
-	PORT_DIR_IN(TILT_PORT);	// 기울기센서
+	PORT_DIR_IN(FIRE_PORT);	//fire detection sensor
+	PORT_DIR_IN(TILT_PORT);	//shock detection sensor
 	
-	PORT_DIR_IN(PRESSURE_BUTTON_PORT);	// 문열림 확인 버튼
-	PORT_SET(PRESSURE_BUTTON_PORT);	// 문열림 확인 버튼 풀업저항, high:열림, low:닫힘
+	PORT_DIR_IN(PRESSURE_BUTTON_PORT);	//Door open confirmation button
+	PORT_SET(PRESSURE_BUTTON_PORT);	//pull-up resistor setting, high: open, low: close
 	
-	PORT_DIR_IN(OPEN_BUTTON_PORT);	// 문열림 버튼
-	PORT_SET(OPEN_BUTTON_PORT);	// 풀업저항 설정, high:안눌림, low:눌림
+	PORT_DIR_IN(OPEN_BUTTON_PORT);	//door open button
+	PORT_SET(OPEN_BUTTON_PORT);	//pull-up resistor setting, high: not pressed, low: pressed
 	
-	PORT_DIR_OUT(OPEN_LED_PORT);	// 문열림 확인 led
+	PORT_DIR_OUT(OPEN_LED_PORT);	//door open check led
 	
-	PORT_DIR_IN(SENIOR_SWITCH_PORT);	// 노인용 도움 스위치
-	PORT_SET(SENIOR_SWITCH_PORT);	// 풀업저항 설정
+	PORT_DIR_IN(SENIOR_SWITCH_PORT);	//help switch for the elderly
+	PORT_SET(SENIOR_SWITCH_PORT);	//Pull-up resistor setting
 	
-	PORT_DIR_OUT(LIGHT1_PORT);	// 전구
+	PORT_DIR_OUT(LIGHT1_PORT);	//lights
 	PORT_DIR_OUT(LIGHT2_PORT);
 	PORT_DIR_OUT(LIGHT3_PORT);
-	PORT_DIR_IN(LIGHT_BUTTON_PORT);	// 전구 모두 끄기 버튼
-	PORT_SET(LIGHT_BUTTON_PORT);	// 풀업저항
+	PORT_DIR_IN(LIGHT_BUTTON_PORT);	//all light off button
+	PORT_SET(LIGHT_BUTTON_PORT);	//Pull-up resistor setting
 	
 	_delay_ms(100);
 	sei();
@@ -596,66 +574,66 @@ int main(void)
 			PORT_CLR(LIGHT2_PORT);
 			PORT_CLR(LIGHT3_PORT);
 		}
-		if(flag_isBuzzerRunning)	// 부저가 울리고 있을 때는 버튼입력 최우선
+		if(flag_isBuzzerRunning)	//When the buzzer is ringing, button input has the highest priority
 		{
-			if(IS_PORT_CLR(OPEN_BUTTON_PORT))	// 버튼 눌리면
+			if(IS_PORT_CLR(OPEN_BUTTON_PORT))	//if Button pressd
 			{
-				buzzerOff();	// 부저 끄기
+				buzzerOff();	//buzzer off
 				flag_autoClose = true;
 				_delay_ms(1000);
 			}
 			_delay_ms(1);
 		}
-		else if(doorCheck())	//  문이 닫혀 있는 동안 실행
+		else if(doorCheck())	//run while the door is closed
 		{
-			readRfid(rfidData);	//rfid 읽기
-			if(flag_isRFIDReceived)	//수신되었는지 확인
+			readRfid(rfidData);	//read rfid
+			if(flag_isRFIDReceived)	//If rfid is tagged
 			{
-				int tmpInt = checkRfid(rfidData);
-				if(tmpInt < 5)	//현재 저장되어있는 값인지 확인
+				int tmpInt = checkRfid(rfidData);	//Check if the value is currently saved in data
+				if(tmpInt < 5)	//if in data
 				{
 					USART0_Tx_String("Welcome,");
 					USART0_Tx_String(RFID_data[tmpInt].RFID_name);
 					USART0_Tx('\n');
 					openDoor();
 				}
-				else //저장 시도
+				else //if not in data store value
 				{
 					storeRfid(rfidData);
 				}
-				flag_isRFIDReceived = false;
+				flag_isRFIDReceived = false;	//receive flag reset
 			}
-			PORT_SET(OPEN_LED_PORT);	// led on
-			if(!flag_autoClose && flag_isButtonPressed)	// 자동 잠금 해제 상태일 때(버튼 누르고 문을 열었다가 닫았을 때)
+			PORT_SET(OPEN_LED_PORT);	//led on
+			if(!flag_autoClose && flag_isButtonPressed)	//When in automatic unlocking state (when the door is opened and closed by pressing a button)
 			{
-				flag_isButtonPressed = false;	// 버튼 눌림 플래그 초기화
-				_delay_ms(500);	// 잠시 기다렸다가
-				closeDoor();	// 문닫기
+				flag_isButtonPressed = false;	//Reset button pressed flag
+				_delay_ms(500);	//wait a while
+				closeDoor();	//close the door
 			}
-			if(IS_PORT_CLR(OPEN_BUTTON_PORT))	// 문이 닫혀있는데 open 버튼이 눌렸으면
+			if(IS_PORT_CLR(OPEN_BUTTON_PORT))	//If the door is closed and the open button is pressed
 			{
-				openDoor();	// 문열기
-				flag_isButtonPressed = true;	// 버튼 눌림 플래그 set
+				openDoor();	//open the door
+				flag_isButtonPressed = true;	//button pressed flag set
 				flag_autoClose = true;
 				_delay_ms(200);
 			}
-			if(readADC(TILT) < TILT_THRESHOLD)	// 충격 발생
+			if(readADC(TILT) < TILT_THRESHOLD)	//is shocked
 			{
 				shockCount++;
 				if(shockCount > 2){
-					USART0_Tx_String("112");	// 블루투스 112 전송
-					urgentButton();	// 1byte 데이터 수신 대기
-					shockCount = 0;	// 충격 카운트 초기화
+					USART0_Tx_String("112");	//Send 112 to phone
+					urgentButton();	//Waiting for 1 byte data reception
+					shockCount = 0;	//Reset Shock Count
 				}
 			}
-			if(readADC(FIRE) > FIRE_THRESHOLD)	// 화재 발생
+			if(readADC(FIRE) > FIRE_THRESHOLD)	//is fire
 			{
-				USART0_Tx_String("119");	// 블루투스 119 전송
-				openDoor();	// 문열기
-				urgentButton();	// 1byte 데이터 수신 대기
+				USART0_Tx_String("119");	//Send 119 to phone
+				openDoor();	//open the door
+				urgentButton();	//Waiting for 1 byte data reception
 			}
 		}
-		else // 문이 열려 있는 동안 실행
+		else //run while the door is open
 		{
 			PORT_CLR(OPEN_LED_PORT);	// led off
 		}

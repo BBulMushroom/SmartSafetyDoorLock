@@ -63,8 +63,6 @@ Discarded input sections
  .data.data1    0x00000000        0x4 main.o
  .bss.buttonRfidTime
                 0x00000000        0x2 main.o
- .bss.rfidFindCount
-                0x00000000        0x2 main.o
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
@@ -702,15 +700,15 @@ END GROUP
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x24a0
+.debug_info     0x00000000     0x248e
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x780 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
  .debug_info    0x00000780      0x5af lib/mfrc522.o
  .debug_info    0x00000d2f      0x1d9 lib/myatmega128.o
  .debug_info    0x00000f08       0xac lib/spi.o
- .debug_info    0x00000fb4     0x13b7 main.o
- .debug_info    0x0000236b       0x9a C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51\libatmega128.a(eerd_byte.o)
- .debug_info    0x00002405       0x9b C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51\libatmega128.a(eeupd_byte.o)
+ .debug_info    0x00000fb4     0x13a5 main.o
+ .debug_info    0x00002359       0x9a C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51\libatmega128.a(eerd_byte.o)
+ .debug_info    0x000023f3       0x9b C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51\libatmega128.a(eeupd_byte.o)
 
 .debug_abbrev   0x00000000      0xe1f
  *(.debug_abbrev)
@@ -739,7 +737,7 @@ END GROUP
  .debug_frame   0x000001d8       0x34 lib/spi.o
  .debug_frame   0x0000020c      0x390 main.o
 
-.debug_str      0x00000000      0x8c6
+.debug_str      0x00000000      0x8b8
  *(.debug_str)
  .debug_str     0x00000000      0x27d C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.6.364/gcc/dev/atmega128/avr51/crtatmega128.o
  .debug_str     0x0000027d      0x245 lib/mfrc522.o
@@ -748,8 +746,8 @@ END GROUP
                                 0x203 (size before relaxing)
  .debug_str     0x0000055d       0x16 lib/spi.o
                                 0x186 (size before relaxing)
- .debug_str     0x00000573      0x353 main.o
-                                0x576 (size before relaxing)
+ .debug_str     0x00000573      0x345 main.o
+                                0x568 (size before relaxing)
 
 .debug_loc      0x00000000     0x1788
  *(.debug_loc)
